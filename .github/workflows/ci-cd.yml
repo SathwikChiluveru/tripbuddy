@@ -1,0 +1,41 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.14.2'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Docker Image
+        run: docker compose up -d --build
+
+      - name: Run tests
+        run: |
+          # Add your test commands here
+          # For example:
+          docker-compose exec tripbuddy-backend npm test
+
+      - name: Tear down Docker Compose
+        run: docker-compose down
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: main
+
+
