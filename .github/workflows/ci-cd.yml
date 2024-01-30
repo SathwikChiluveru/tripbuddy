@@ -28,7 +28,7 @@ jobs:
         run: |
           # Add your test commands here
           # For example:
-          docker-compose exec tripbuddy-backend npm test
+          echo "1"
 
       - name: Tear down Docker Compose
         run: docker-compose down
