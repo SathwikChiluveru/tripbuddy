@@ -5,7 +5,7 @@ const userController = require('../controllers/user.controller')
 
 router.get('/getAllUsers', userController.getAllUsers)
 router.post('/register', userController.createNewUser)
-router.post('/login', userController.login)
+// router.post('/login', userController.login)
 router.get('/getUserById/:id', userController.getUserById)
 router.put('/:id/changePassword', userController.changePassword)
 router.put('/:id/editProfile', userController.editProfile);

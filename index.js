@@ -8,6 +8,8 @@ require('dotenv').config()
 app.use(express.json());
 const session = require('express-session')
 
+connectDB()
+
 app.use(
     session({
       secret: 'secret',
@@ -17,11 +19,9 @@ app.use(
     })
 );
 
-
-connectDB()
-
 app.use('/api/user', require('./routes/user.route'))
 app.use('/api/trip', require('./routes/trip.route'))
+app.use('/api/auth', require('./routes/auth.route'))
 
 app.get('/', (req, res) => {
     res.send('Welcome')
