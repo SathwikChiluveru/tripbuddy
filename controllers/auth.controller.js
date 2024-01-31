@@ -1,12 +1,26 @@
 const User = require('../models/user.model.js')
 const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcryptjs')
+const { check, validationResult } = require('express-validator');
 
 
 // Login User
 
 const login = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
+
+    // Apply validation rules
+    await Promise.all([
+        check('email').isEmail().withMessage('Invalid Email Address').run(req),
+        check('password').notEmpty().withMessage('Password is required').run(req),
+    ]);
+
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const user = await User.findOne({ email });
 
     if (!user) {

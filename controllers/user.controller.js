@@ -3,13 +3,25 @@ const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcryptjs')
 const session = require('express-session')
 const saltRounds = 10  
-
+const { check, validationResult } = require('express-validator');
 
 // Create and Save a new User
 const createNewUser = asyncHandler(async (req, res) => {
     const { username, email, password } = req.body
 
-    //Check for duplicate
+    // Apply validation rules
+    await Promise.all([
+        check('email').isEmail().withMessage('Invalid Email Address').run(req),
+        check('password').isLength({ min: 5 }).withMessage('Password must be at least 5 characters long').run(req),
+    ]);
+
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Check for duplicate
     const userExists = await User.findOne({ email })
 
     if (userExists) {
