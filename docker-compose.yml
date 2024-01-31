@@ -1,29 +1,14 @@
-# version: '3'
-
-# services:
-#   backend:
-#     build: 
-#       context: .
-#     container_name: tripbuddy-backend
-#     ports:
-#       - "3000:3000"
-
-#     environment:
-#       NODE_ENV: production
-
 version: '3'
+
 services:
-  api-test:
-    container_name: tripbuddy-backend
-    build:
-      dockerfile: Dockerfile
+  backend:
+    build: 
       context: .
+    container_name: tripbuddy-backend
     command:
       bash -c "npm run test; npm run test-failure"
-    networks:
-      - <YOUR_USER_DEFINED_NETWORK>
-    environment:
-      - API_URL=http://proxy:80
-      - MONGO_URL=mongodb://mongo:27017/<DB_NAME>
     ports:
-      - '4000:4000'
+      - "3000:3000"
+
+    environment:
+      NODE_ENV: production
