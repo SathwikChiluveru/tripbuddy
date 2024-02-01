@@ -19,7 +19,12 @@ jobs:
           node-version: '18.14.2'
 
       - name: Go into branch
-        run: cd server
+        run: |
+          # Add your test commands here
+          # For example:
+            cd ..
+            cd server
+        
 
       - name: Install Dependencies
         run: npm install
