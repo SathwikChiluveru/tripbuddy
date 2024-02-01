@@ -3,8 +3,8 @@ version: '3'
 services:
   backend:
     build: 
-      context: .
-    container_name: tripbuddy-backend
+      context: ./server
+    container_name: tripbuddy
     command:
       bash -c "npm run test; npm run test-failure"
     ports:
