@@ -22,7 +22,6 @@ jobs:
         run: |
           # Add your test commands here
           # For example:
-            cd ..
             cd server
         
 
