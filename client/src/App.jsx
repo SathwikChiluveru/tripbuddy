@@ -10,6 +10,7 @@ import {
 import Landing from './pages/Landing';
 import MainPage from './pages/MainPage';
 import SignInPage from './pages/Login';
+import Register from './pages/Register'
 
 const App = () => {
   return (
@@ -18,7 +19,9 @@ const App = () => {
         <Routes>
           <Route index path="/" element={<Landing />} />
           <Route path="/main" element={<MainPage/>}/>
-          <Route path="/login" element={<SignInPage />} />
+          <Route path="/login" element={<SignInPage/>} />
+          <Route path="/register" element={<Register/>} />
+
         </Routes>
       </Box>
       <Footer/>

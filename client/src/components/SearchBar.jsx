@@ -1,5 +1,4 @@
 import { Box } from '@chakra-ui/react'
-import { Search } from 'chakra-ui-search'
 
 export default function SearchBar(){
 

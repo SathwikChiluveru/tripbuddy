@@ -4,7 +4,7 @@ services:
   backend:
     build: 
       context: ./server
-    container_name: tripbuddy
+    container_name: tripbuddy-backend
     ports:
       - "3000:3000"
     healthcheck:
@@ -15,7 +15,14 @@ services:
       start_period: 30s
     dns:
       - 8.8.8.8
-    
+    environment:
+      NODE_ENV: production
 
+  frontend:
+    build:
+      context: ./client
+    container_name: tripbuddy-frontend
+    ports:
+      - "5173:5173"
     environment:
       NODE_ENV: production
