@@ -5,10 +5,17 @@ services:
     build: 
       context: ./server
     container_name: tripbuddy
-    command:
-      bash -c "npm run test; npm run test-failure"
     ports:
       - "3000:3000"
+    healthcheck:
+      test: curl --fail http://localhost:3000/healthcheck || exit 1
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    dns:
+      - 8.8.8.8
+    
 
     environment:
       NODE_ENV: production

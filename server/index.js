@@ -35,3 +35,7 @@ app.use('/api/auth', require('./routes/auth.route'))
 app.get('/', (req, res) => {
     res.send('Welcome')
 })
+
+app.get('/healthcheck', (req, res) => {
+    res.send('Health check completed')
+})
