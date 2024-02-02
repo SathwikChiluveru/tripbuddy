@@ -22,8 +22,8 @@ jobs:
         run: cd server
         
 
-      - name: Install Dependencies
-        run: npm install
+      # - name: Install Dependencies
+      #   run: npm install
 
       - name: Build Docker Image
         run: docker compose up -d --build
