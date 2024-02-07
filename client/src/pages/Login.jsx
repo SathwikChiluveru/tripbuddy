@@ -14,6 +14,7 @@ import {
   import { useNavigate } from 'react-router-dom';
   import { useGoogleLogin } from "@react-oauth/google";
   import axios from "axios";
+  import bgImage from '../assets/sign-up.jpg'; 
 
   
   
@@ -42,11 +43,16 @@ import {
         flow: "auth-code",
       });
     return (
-      <Flex
-        minH={'100vh'}
-        align={'center'}
-        justify={'center'}
-        bg={useColorModeValue('gray.50', 'gray.800')}>
+      <Box
+      bgImage={`url(${bgImage})`}
+      bgSize="cover"
+      bgPosition="center"
+      minH="100vh"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    //   bg={useColorModeValue('red.50', 'gray.800')}
+    >
         <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
           <Stack align={'center'}>
             <Heading fontSize={'4xl'}>Sign in to your account</Heading>
@@ -91,7 +97,7 @@ import {
             </Stack>
           </Box>
         </Stack>
-      </Flex>
+      </Box>
     )
   }
 
