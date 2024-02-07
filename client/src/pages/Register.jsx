@@ -24,6 +24,24 @@ import axios from "axios";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false)
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+  });
+
+  const generateRandomString = (length) => {
+    const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+  
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+  
+    return result;
+  };
+
   const googleAuth = useGoogleLogin({
     onSuccess: async ({ code }) => {
       try {
@@ -31,12 +49,39 @@ export default function Register() {
           setTimeout(resolve, 0);
         });
 
-        const response = await axios.post("http://localhost:3000/api/auth/google/callback", {
+        const googleResponse = await axios.post("http://localhost:3000/api/auth/google/callback", {
           code,
         });
-        console.log(response.data)
-        // Handle the response using the provided function
-        navigate("/");
+        console.log(googleResponse.data.data)
+
+        // Extract user information from the Google response
+        const { name, email} = googleResponse.data.data;
+
+        const pwd = generateRandomString(12);
+
+        // Create a new user object
+        const newUser = {
+          username: name,
+          email,
+          password: pwd,
+        };
+
+        // Store the user data in MongoDB
+        const response = await fetch('http://localhost:3000/api/user/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newUser),
+        });
+
+        if (response.ok) {
+          // Handle success, e.g., redirect or show a success message
+          console.log('Account created successfully');
+        } else {
+          // Handle errors, e.g., show error messages to the user
+          console.error('Failed to create account');
+        }
       } catch (error) {
         console.log(error);
       }
@@ -46,6 +91,34 @@ export default function Register() {
     },
     flow: "auth-code",
   });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('http://localhost:3000/api/user/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        // Handle success, e.g., redirect or show a success message
+        console.log('Account created successfully');
+      } else {
+        // Handle errors, e.g., show error messages to the user
+        console.error('Failed to create account');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (
     <Box
@@ -71,30 +144,20 @@ export default function Register() {
           rounded={'lg'}
           bg={useColorModeValue('white', 'gray.700')}
           boxShadow={'lg'}
-          p={8}>
+          p={8} minWidth={'400px'}>
           <Stack spacing={4}>
-            <HStack>
-              <Box>
-                <FormControl id="firstName" isRequired>
-                  <FormLabel>First Name</FormLabel>
-                  <Input type="text" />
-                </FormControl>
-              </Box>
-              <Box>
-                <FormControl id="lastName">
-                  <FormLabel>Last Name</FormLabel>
-                  <Input type="text" />
-                </FormControl>
-              </Box>
-            </HStack>
+            <FormControl id="username" isRequired>
+              <FormLabel>Username</FormLabel>
+              <Input type="text" onChange={handleChange}/>
+            </FormControl>
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
-              <Input type="email" />
+              <Input type="email" onChange={handleChange}/>
             </FormControl>
             <FormControl id="password" isRequired>
               <FormLabel>Password</FormLabel>
               <InputGroup>
-                <Input type={showPassword ? 'text' : 'password'} />
+                <Input type={showPassword ? 'text' : 'password'} onChange={handleChange}/>
                 <InputRightElement h={'full'}>
                   <Button
                     variant={'ghost'}
@@ -112,7 +175,9 @@ export default function Register() {
                 color={'white'}
                 _hover={{
                   bg: 'blue.500',
-                }}>
+                }}
+                onClick={handleSubmit}
+                >
                 Sign up
               </Button>
               <Button w={'full'} variant={'outline'} leftIcon={<FcGoogle />} onClick={googleAuth}>
