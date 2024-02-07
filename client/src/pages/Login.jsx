@@ -12,6 +12,7 @@ import {
     useColorModeValue,
   } from '@chakra-ui/react'
   import { useNavigate } from 'react-router-dom';
+  import React, { useState } from 'react';
   import { useGoogleLogin } from "@react-oauth/google";
   import axios from "axios";
   import bgImage from '../assets/sign-up.jpg'; 
@@ -21,6 +22,30 @@ import {
   
   const SignIn = () => {
     const navigate = useNavigate();
+
+    const [formData, setFormData] = useState({
+      email: '',
+      password: '',
+    });
+
+    const handleChange = (e) => {
+      setFormData({ ...formData, [e.target.id]: e.target.value });
+    };
+
+    const handleSignIn = async () => {
+      try {
+        const response = await axios.post("http://localhost:3000/api/auth/login", formData);
+  
+        // Handle the response
+        console.log(response.data);
+  
+        // Redirect or perform other actions based on the response
+        navigate("/");
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     const googleAuth = useGoogleLogin({
         onSuccess: async ({ code }) => {
           try {
@@ -69,11 +94,11 @@ import {
             <Stack spacing={4}>
               <FormControl id="email">
                 <FormLabel>Email address</FormLabel>
-                <Input type="email" />
+                <Input type="email" onChange={handleChange} />
               </FormControl>
               <FormControl id="password">
                 <FormLabel>Password</FormLabel>
-                <Input type="password" />
+                <Input type="password" onChange={handleChange} />
               </FormControl>
               <Stack spacing={10}>
                 <Stack
@@ -88,7 +113,9 @@ import {
                   color={'white'}
                   _hover={{
                     bg: 'blue.500',
-                  }}>
+                  }}
+                  onClick={handleSignIn}
+                  >
                   Sign in
                 </Button>
               </Stack>
