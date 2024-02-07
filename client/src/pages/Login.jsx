@@ -1,5 +1,5 @@
 import {
-    Flex,
+    Center,
     Box,
     FormControl,
     FormLabel,
@@ -15,6 +15,7 @@ import {
   import { useGoogleLogin } from "@react-oauth/google";
   import axios from "axios";
   import bgImage from '../assets/sign-up.jpg'; 
+  import { FcGoogle } from 'react-icons/fc'
 
   
   
@@ -91,8 +92,10 @@ import {
                   Sign in
                 </Button>
               </Stack>
-              <Button onClick={googleAuth}>
-                Google Sign in
+              <Button w={'full'} variant={'outline'} leftIcon={<FcGoogle />} onClick={googleAuth}>
+                <Center>
+                  <Text>Sign in with Google</Text>
+                </Center>
               </Button>
             </Stack>
           </Box>

@@ -1,5 +1,5 @@
 import {
-  Flex,
+  Center,
   Box,
   FormControl,
   FormLabel,
@@ -13,13 +13,39 @@ import {
   Text,
   useColorModeValue,
   Link,
-} from '@chakra-ui/react'
-import { useState } from 'react'
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
+} from '@chakra-ui/react';
+import { useState } from 'react';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { useGoogleLogin } from "@react-oauth/google";
 import bgImage from '../assets/sign-up.jpg'; 
+import { FcGoogle } from 'react-icons/fc';
+import axios from "axios";
+
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false)
+  const googleAuth = useGoogleLogin({
+    onSuccess: async ({ code }) => {
+      try {
+        await new Promise ((resolve) => {
+          setTimeout(resolve, 0);
+        });
+
+        const response = await axios.post("http://localhost:3000/api/auth/google/callback", {
+          code,
+        });
+        console.log(response.data)
+        // Handle the response using the provided function
+        navigate("/");
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+    flow: "auth-code",
+  });
 
   return (
     <Box
@@ -78,7 +104,7 @@ export default function Register() {
                 </InputRightElement>
               </InputGroup>
             </FormControl>
-            <Stack spacing={10} pt={2}>
+            <Stack spacing={5} pt={2}>
               <Button
                 loadingText="Submitting"
                 size="lg"
@@ -88,6 +114,11 @@ export default function Register() {
                   bg: 'blue.500',
                 }}>
                 Sign up
+              </Button>
+              <Button w={'full'} variant={'outline'} leftIcon={<FcGoogle />} onClick={googleAuth}>
+                <Center>
+                  <Text>Sign Up with Google</Text>
+                </Center>
               </Button>
             </Stack>
             <Stack pt={6}>
