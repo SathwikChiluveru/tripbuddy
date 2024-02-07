@@ -34,17 +34,32 @@ import {
 
     const handleSignIn = async () => {
       try {
-        const response = await axios.post("http://localhost:3000/api/auth/login", formData);
-  
-        // Handle the response
-        console.log(response.data);
-  
-        // Redirect or perform other actions based on the response
-        navigate("/");
+          const response = await axios.post("http://localhost:3000/api/auth/login", formData);
+          // Handle the response
+          console.log(response.data);
+          // Redirect or perform other actions based on the response
+          navigate("/");
       } catch (error) {
-        console.error(error);
+          console.error('Axios Error:', error);
+  
+          if (error.response) {
+              // The request was made, but the server responded with a status code that falls out of the range of 2xx
+              console.error('Response Status:', error.response.status);
+              console.error('Response Data:', error.response.data);
+  
+              // Display the specific error message received from the server
+              alert(error.response.data.error || 'An error occurred');
+          } else if (error.request) {
+              // The request was made, but no response was received
+              console.error('No Response Received:', error.request);
+              alert('No response received from the server');
+          } else {
+              // Something happened in setting up the request that triggered an Error
+              console.error('Error Message:', error.message);
+              alert('An error occurred');
+          }
       }
-    };
+  };  
 
     const googleAuth = useGoogleLogin({
         onSuccess: async ({ code }) => {
