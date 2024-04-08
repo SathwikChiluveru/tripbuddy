@@ -148,7 +148,7 @@ const changePassword = asyncHandler(async (req, res) => {
 
 const editProfile = asyncHandler(async (req, res) => {
     const userId = req.params.id;
-    const { firstName, lastName, bio, age, username } = req.body;
+    const { firstName, lastName, bio, age, countriesVisited } = req.body;
   
     try {
       const user = await User.findById(userId);
@@ -161,7 +161,7 @@ const editProfile = asyncHandler(async (req, res) => {
       user.lastName = lastName;
       user.bio = bio;
       user.age = age;
-      user.username = username;
+      user.countriesVisited = countriesVisited; 
       await user.save();
   
       res.status(200).json({ message: 'User profile updated', user });

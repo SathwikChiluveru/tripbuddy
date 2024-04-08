@@ -8,9 +8,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   bio: { type: String },
   age: { type: Number },
-  countriesVisited: [{
-    countryName: { type: String }
-  }],
+  countriesVisited: [{ type: String }], 
   tripsPosted: [{
     tripId: { type: mongoose.Schema.Types.ObjectId, ref: 'Trip' },
     tripName: { type: String },

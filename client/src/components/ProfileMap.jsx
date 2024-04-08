@@ -2,9 +2,9 @@ import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import worldMapData from '../assets/features.json';
 import { Box } from '@chakra-ui/react';
 
-const countriesVisited = ["Colombia", "Russia", "Malaysia", "Thailand", "Indonesia", "China"];
+// const countriesVisited = ["Colombia", "Russia", "Malaysia", "Thailand", "Indonesia", "China"];
 
-export default function ProfileMap() {
+export default function ProfileMap( {countriesVisited }) {
   return (
     <Box w="90%" mx="auto" mt={4}>
       <ComposableMap

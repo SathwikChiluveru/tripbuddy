@@ -10,6 +10,7 @@ import SignInPage from './pages/Login';
 import Register from './pages/Register'
 import ProfilePage from './pages/ProfilePage'
 import EditProfile from './pages/EditProfile';
+import CreateTrip from './pages/CreateTrip';
 
 const App = () => {
   return (
@@ -22,6 +23,8 @@ const App = () => {
           <Route path="/register" element={<Register/>} />
           <Route path="/profile" element={<ProfilePage/>}/>
           <Route path="/editprofile" element={<EditProfile/>}/>
+          <Route path="/createtrip" element={<CreateTrip/>}/>
+
         </Routes>
       </Box>
       <Footer/>
