@@ -7,7 +7,7 @@ const { check, validationResult } = require('express-validator');
 
 // Create and Save a new User
 const createNewUser = asyncHandler(async (req, res) => {
-    const { username, email, password } = req.body
+    const { firstName, lastName, username, email, password } = req.body
 
     // Apply validation rules
     await Promise.all([
@@ -37,6 +37,8 @@ const createNewUser = asyncHandler(async (req, res) => {
 
     //Create and store new user
     const account = new User ({
+        firstName, 
+        lastName,
         username,
         email,
         password: hashPassword
@@ -146,7 +148,7 @@ const changePassword = asyncHandler(async (req, res) => {
 
 const editProfile = asyncHandler(async (req, res) => {
     const userId = req.params.id;
-    const { bio, age, username } = req.body;
+    const { firstName, lastName, bio, age, username } = req.body;
   
     try {
       const user = await User.findById(userId);
@@ -155,6 +157,8 @@ const editProfile = asyncHandler(async (req, res) => {
         return res.status(404).json({ message: 'User not found' });
       }
   
+      user.firstName = firstName;
+      user.lastName = lastName;
       user.bio = bio;
       user.age = age;
       user.username = username;
@@ -210,7 +214,6 @@ const logout = asyncHandler(async (req, res) => {
 
 module.exports = {
     createNewUser,
-    // login,
     getAllUsers,
     getUserById,
     changePassword,
