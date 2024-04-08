@@ -5,14 +5,12 @@ import {
   FormLabel,
   Input,
   InputGroup,
-  HStack,
   InputRightElement,
   Stack,
   Button,
   Heading,
   Text,
   useColorModeValue,
-  Link,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
@@ -20,11 +18,13 @@ import { useGoogleLogin } from "@react-oauth/google";
 import bgImage from '../assets/sign-up.jpg'; 
 import { FcGoogle } from 'react-icons/fc';
 import axios from "axios";
-
+import { Link } from 'react-router-dom';
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
+    firstName: '',
+    lastName:'',
     username: '',
     email: '',
     password: '',
@@ -58,10 +58,12 @@ export default function Register() {
         console.log(googleResponse.data.data);
 
         // Extract user information from the Google response
-        const { name, email } = googleResponse.data.data;
+        const { name, email, given_name, family_name  } = googleResponse.data.data;
 
         // Create a new user object
         const newUser = {
+          firstName: given_name,
+          lastName: family_name,
           username: name,
           email,
           password: generateRandomString(12),
@@ -183,6 +185,14 @@ export default function Register() {
           boxShadow={'lg'}
           p={8} minWidth={'400px'}>
           <Stack spacing={4}>
+            <FormControl id="firstName" isRequired>
+                <FormLabel>First Name</FormLabel>
+                <Input type="text" onChange={handleChange} />
+            </FormControl>
+            <FormControl id="lastName" isRequired>
+                <FormLabel>Last Name</FormLabel>
+                <Input type="text" onChange={handleChange} />
+            </FormControl>
             <FormControl id="username" isRequired>
               <FormLabel>Username</FormLabel>
               <Input type="text" onChange={handleChange} />
@@ -203,7 +213,7 @@ export default function Register() {
                 <Input type={showPassword ? 'text' : 'password'} onChange={handlePasswordChange}/>
                 <InputRightElement h={'full'}>
                   <Button
-                    variant={'ghost'}
+                    variant={'ghost'} 
                     onClick={() => setShowPassword((showPassword) => !showPassword)}>
                     {showPassword ? <ViewIcon /> : <ViewOffIcon />}
                   </Button>
@@ -235,9 +245,12 @@ export default function Register() {
               </Button>
             </Stack>
             <Stack pt={6}>
-              <Text align={'center'}>
-                Already a user? <Link color={'blue.400'}>Login</Link>
-              </Text>
+            <Text align={'center'}>
+              Already a user?{' '}
+              <Link to="/login"style={{ color: 'blue' }}>
+                Login
+              </Link>
+            </Text>
             </Stack>
           </Stack>
         </Box>

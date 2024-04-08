@@ -10,7 +10,10 @@ import {
     Heading,
     Text,
     useColorModeValue,
+    InputGroup,
+    InputRightElement
   } from '@chakra-ui/react'
+  import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
   import { useNavigate } from 'react-router-dom';
   import React, { useState } from 'react';
   import { useGoogleLogin } from "@react-oauth/google";
@@ -22,7 +25,7 @@ import {
   
   const SignIn = () => {
     const navigate = useNavigate();
-
+    const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
       email: '',
       password: '',
@@ -30,6 +33,10 @@ import {
 
     const handleChange = (e) => {
       setFormData({ ...formData, [e.target.id]: e.target.value });
+    };
+
+    const handlePasswordVisibilityToggle = () => {
+      setShowPassword((prevShowPassword) => !prevShowPassword);
     };
 
     const handleSignIn = async () => {
@@ -113,7 +120,18 @@ import {
               </FormControl>
               <FormControl id="password">
                 <FormLabel>Password</FormLabel>
-                <Input type="password" onChange={handleChange} />
+                <InputGroup>
+                <Input type={showPassword ? 'text' : 'password'}
+                onChange={handleChange}/>
+                <InputRightElement h={'full'}>
+                  <Button
+                    variant={'ghost'}
+                    onClick={handlePasswordVisibilityToggle}
+                  >
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
               </FormControl>
               <Stack spacing={10}>
                 <Stack
