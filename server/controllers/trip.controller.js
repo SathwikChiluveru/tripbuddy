@@ -4,18 +4,21 @@ const asyncHandler = require('express-async-handler');
 
 // Create a new trip
 const createTrip = asyncHandler(async (req, res) => {
-  const { title, startDate, endDate, duration, totalSlots, continent, country, city, categories, tags, description } = req.body;
+  const { hostId, host, title, startDate, endDate, duration, totalSlots, country, city, categories, tags, description } = req.body;
 
-  const hostId = req.session.user.id
+  // When session is implemented do this:
+  //host : req.session.user.username,
+  // const hostId = req.session.user.id
+
+  // hostid and host are temporarily passed through the body during trip creation
   const newTrip = new Trip({
     title,
-    host : req.session.user.username,
+    host,
     hostId,
     startDate,
     endDate,
     duration,
     totalSlots,
-    continent,
     country,
     city,
     categories,

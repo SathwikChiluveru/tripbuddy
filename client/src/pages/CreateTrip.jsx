@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
     FormControl,
     FormLabel,
@@ -12,16 +13,103 @@ import {
     Tag, 
     TagLabel, 
     TagCloseButton,
-    Image
+    Image,
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
+    NumberIncrementStepper,
+    NumberDecrementStepper,
+    useToast
 } from '@chakra-ui/react'
 import { ChevronLeftIcon } from "@chakra-ui/icons"
 import { useState } from 'react';
+import axios from 'axios';
 export default function CreateTrip() {
 
     const [newCategory, setNewCategory] = useState('');
     const [categories, setCategories] = useState([]);
-    const [newTag, setnewTag] = useState('');
+    const [newTag, setNewTag] = useState('');
     const [tags, setTags] = useState([]);
+    const toast = useToast();
+
+    const hostId = '6613ac4dc6160cf638d224d4';
+
+    const [formData, setFormData] = useState({
+        hostId: hostId,
+        host: "sathwikch",
+        title: '',
+        description: '',
+        startDate: '',
+        endDate: '',
+        availableSlots: 0,
+        categories: [],
+        tags: []
+    });
+
+    // const handleChange = (e) => {
+    //     if (e.target.id === 'Tags' ) {
+    //       // For countries visited input field
+    //       setNewTag(e.target.value);
+    //     } else if (e.target.id === 'Category') {
+    //       // For bio textarea
+    //       setNewCategory(e.target.value)
+    //     } else if (e.target.id === 'description') {
+    //         // For bio textarea
+    //         setFormData({ ...formData, description: e.target.value }); 
+    //     } else {
+    //       // For other input fields
+    //       setFormData({ ...formData, [e.target.id]: e.target.value });
+    //     }
+    // };
+
+    const handleSubmit = async () => {
+        try {
+
+            // Calculate the duration
+            const startDate = new Date(formData.startDate);
+            const endDate = new Date(formData.endDate);
+            const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+            const tripData = {
+                hostId: hostId,
+                host: "sathwikch",
+                title: formData.title,
+                description: formData.description,
+                categories,
+                tags,
+                startDate: formData.startDate,
+                endDate: formData.endDate,
+                duration,
+                totalSlots: formData.availableSlots,
+                city: formData.city,
+                country: formData.country,
+            };
+
+            const response = await axios.post('http://localhost:3000/api/trip/createTrip', tripData);
+            
+            toast({
+                title: 'Trip Created Successfully.',
+                status: 'success',
+                position: 'top-right',
+                duration: 5000,
+                isClosable: true,
+            })
+
+            // Optionally, redirect to another page or display a success message
+        } catch (error) {
+            console.error('Error creating trip:', error);
+            toast({
+                title: 'Trip Creation Failed.',
+                status: 'error',
+                position: 'top-right',
+                duration: 5000,
+                isClosable: true,
+              })
+            // Handle error, show error message, etc.
+        }
+    };
+
+    
 
     const handleCategoryInputKeyDown = (e) => {
         if (e.key === 'Enter' && newCategory.trim() !== '') {
@@ -37,7 +125,7 @@ export default function CreateTrip() {
     const handleTagInputKeyDown = (e) => {
         if (e.key === 'Enter' && newTag.trim() !== '') {
           setTags((prevTags) => [...prevTags, newTag.trim()]);
-          setnewTag('');
+          setNewTag('');
         }
       };
     
@@ -63,9 +151,22 @@ export default function CreateTrip() {
                 <Stack width={'50%'}>
                     <FormControl width={'100%'} justifyContent={'flex-start'} isRequired>
                         <FormLabel fontSize={'24px'}>Trip Name</FormLabel>
-                        <Input type='text' placeholder="Type a cool name..." mb={'20px'} name='title' required />
+                        <Input type='text' placeholder="Type a cool name..." mb={'20px'} value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} required />
+                    </FormControl>
+
+                    <FormControl width={'100%'} justifyContent={'flex-start'} isRequired>
+                        <FormLabel fontSize={'24px'}>Destination</FormLabel>
+                        <Input type='text' placeholder="Type a cool name..." mb={'20px'} value={formData.destination} onChange={(e) => {
+                        const [city, country] = e.target.value.split(',').map(item => item.trim());
+                        setFormData({ ...formData, city, country });
+                        }} 
+                        required 
+                        />                    
+                    </FormControl>
+
+                    <FormControl id='description' isRequired>
                         <FormLabel fontSize={'24px'}>Description</FormLabel>
-                        <Textarea type='text' placeholder="Type the description..." mb={'20px'} name='description' required />
+                        <Textarea type='text' placeholder="Type the description..." mb={'20px'} value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} required />
                     </FormControl>
                     
                     <FormControl id="Category" isRequired>
@@ -96,7 +197,7 @@ export default function CreateTrip() {
                         type='text'
                         placeholder="Type a tag and press Enter"
                         value={newTag}
-                        onChange={(e) => setnewTag(e.target.value)}
+                        onChange={(e) => setNewTag(e.target.value)}
                         onKeyDown={handleTagInputKeyDown}
                         mb={'20px'}
                         name='tag'
@@ -112,8 +213,10 @@ export default function CreateTrip() {
                         ))}
                     </Stack>
 
+
                     <Stack direction="row" spacing={4}>
                         <Button
+                            onClick={handleSubmit}
                             colorScheme="blue" 
                             variant="solid"
                             width="fit-content"
@@ -133,9 +236,20 @@ export default function CreateTrip() {
                 <Stack width={'50%'} flexDirection={'column'} justifyContent={'space-between'} >
                     <Box h={'1%'}>
                         <FormLabel fontSize={'24px'}>Start Date</FormLabel>
-                        <Input placeholder="Select Date and Time" size="md" type="datetime-local"/>
+                        <Input mb={5} placeholder="Select Date and Time" size="md" type="datetime-local" value={formData.startDate} onChange={(e) => setFormData({ ...formData, startDate: e.target.value })} />
                         <FormLabel fontSize={'24px'}>End Date</FormLabel>
-                        <Input placeholder="Select Date and Time" size="md" mb={'20px'} type="datetime-local"/>
+                        <Input placeholder="Select Date and Time" size="md" mb={'20px'} type="datetime-local" value={formData.endDate} onChange={(e) => setFormData({ ...formData, endDate: e.target.value })} />
+
+                        <FormControl id="slots" isRequired>
+                            <FormLabel fontSize={'24px'}>Available Slots</FormLabel>
+                            <NumberInput value={formData.availableSlots} onChange={(value) => setFormData({ ...formData, availableSlots: value })}>
+                            <NumberInputField/>
+                            <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                            </NumberInputStepper>
+                            </NumberInput>
+                        </FormControl>
                     </Box>
                     <Box marginBottom="20">
                         <FormLabel fontSize={'24px'}>Image <Text as='sup' color={'red'}>*</Text> </FormLabel>
