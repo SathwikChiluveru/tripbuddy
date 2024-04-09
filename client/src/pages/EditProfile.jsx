@@ -23,14 +23,18 @@ import {
   useToast
 } from '@chakra-ui/react'
 import { SmallCloseIcon } from '@chakra-ui/icons'
-import { useState } from 'react';
+import { useState, useRef } from 'react'; 
 import axios from 'axios';
-import { Link}  from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export default function EditProfile() {
   const [countriesVisited, setCountriesVisited] = useState([]);
   const [newCountry, setNewCountry] = useState('');
+  const [file, setFile] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState('https://bit.ly/broken-link');
+  const [imageUrl, setImageUrl] = useState('')
   const toast = useToast();
+  const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -38,27 +42,89 @@ export default function EditProfile() {
     age: '',
     bio: '',
     countriesVisited: [],
+    imageUrl: ''
   });
 
   const handleChange = (e) => {
     if (e.target.id === 'CountriesVisited') {
-      // For countries visited input field
       setNewCountry(e.target.value);
     } else if (e.target.id === 'Bio') {
-      // For bio textarea
       setFormData({ ...formData, bio: e.target.value });
     } else {
-      // For other input fields
       setFormData({ ...formData, [e.target.id]: e.target.value });
     }
   };
 
+  const handleCountryInputKeyDown = (event) => {
+    if (event.key === 'Enter' && newCountry.trim() !== '') {
+      setCountriesVisited(prev => [...prev, newCountry.trim()]);
+      setNewCountry('');
+    }
+  };
+
+  const handleRemoveCountry = (countryToRemove) => {
+    setCountriesVisited(prev => prev.filter(country => country !== countryToRemove));
+  };
+
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+    setAvatarUrl(URL.createObjectURL(event.target.files[0]));
+  };
+
+  const handleRemoveImage = () => {
+    setFile(null);
+    setAvatarUrl('https://bit.ly/broken-link');
+  };
+
+  const handleAvatarClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleUploadImage = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const response = await axios.post('http://localhost:3000/api/user/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const imageUrl = response.data.url
+      setAvatarUrl(imageUrl)
+      setImageUrl(imageUrl)
+      console.log("AWS Response: " + imageUrl)
+      setFormData({...formData, avatarUrl: imageUrl})
+
+      return imageUrl
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      toast({
+        title: 'Error uploading image',
+        status: 'error',
+        position: 'top-right',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
+
   const handleSubmit = async () => {
     try {
-      const updatedFormData = { ...formData, countriesVisited };
-      console.log(updatedFormData)
-      await axios.put(`http://localhost:3000/api/user/6613ac4dc6160cf638d224d4/editProfile`, updatedFormData);
-      
+
+      let updatedImageUrl = imageUrl
+
+      if (file) {
+        updatedImageUrl = await handleUploadImage();
+      }
+      console.log("Submit state url: ", updatedImageUrl)
+      const updatedFormData = { ...formData, countriesVisited, imageUrl: updatedImageUrl };
+      console.table(updatedFormData)
+      console.log("Updated", updatedFormData)
+      await axios.put(`http://localhost:3000/api/user/66156aed7a885100349dd43c/editProfile`, updatedFormData);
+
       toast({
         title: 'Profile Updated Successfully.',
         status: 'success',
@@ -66,7 +132,6 @@ export default function EditProfile() {
         duration: 5000,
         isClosable: true,
       })
-
     } catch (error) {
       console.error('Error updating profile:', error);
       alert('An error occurred while updating the profile.');
@@ -78,20 +143,7 @@ export default function EditProfile() {
         duration: 5000,
         isClosable: true,
       })
-
     }
-  };
-
-
-  const handleCountryInputKeyDown = (event) => {
-    if (event.key === 'Enter' && newCountry.trim() !== '') {
-      setCountriesVisited(prev => [...prev, newCountry.trim()]);
-      setNewCountry('');
-    }
-  };
-
-  const handleRemoveCountry = (countryToRemove) => {
-    setCountriesVisited(prev => prev.filter(country => country !== countryToRemove));
   };
 
   return (
@@ -116,7 +168,7 @@ export default function EditProfile() {
               User Profile Edit
             </Heading>
             <Spacer />
-            <Avatar size="xl" src="https://bit.ly/dan-abramov">
+            <Avatar size="xl" src={avatarUrl} onClick={handleAvatarClick}>
               <AvatarBadge
                 as={IconButton}
                 size="sm"
@@ -125,8 +177,10 @@ export default function EditProfile() {
                 colorScheme="red"
                 aria-label="remove Image"
                 icon={<SmallCloseIcon />}
+                onClick={handleRemoveImage}
               />
             </Avatar>
+            <input type="file" accept="image/*" onChange={handleFileChange} ref={fileInputRef} style={{ display: 'none' }} />
           </Stack>
         </FormControl>
         <Stack direction={['column', 'row']} spacing={4}>
@@ -155,8 +209,7 @@ export default function EditProfile() {
           <FormControl id="age" isRequired>
             <FormLabel>Age</FormLabel>
             <NumberInput>
-              <NumberInputField onChange={handleChange}
-              value={formData.age}/>
+              <NumberInputField onChange={handleChange} value={formData.age} />
               <NumberInputStepper>
                 <NumberIncrementStepper />
                 <NumberDecrementStepper />
@@ -185,7 +238,6 @@ export default function EditProfile() {
             value={newCountry}
             onChange={(e) => setNewCountry(e.target.value)}
             onKeyDown={handleCountryInputKeyDown}
-
           />
         </FormControl>
         <Stack direction="row" flexWrap="wrap">
@@ -202,26 +254,23 @@ export default function EditProfile() {
               bg={'red.400'}
               color={'white'}
               w="full"
-
               _hover={{
                 bg: 'red.500',
               }}>
               Cancel
             </Button>
           </Link>
-          
-          <Link to="/profile">
-            <Button
-              bg={'blue.400'}
-              color={'white'}
-              w="full"
-              _hover={{
-                bg: 'blue.500',
-              }}
-              onClick={handleSubmit}>
-              Submit
-            </Button>
-          </Link>
+
+          <Button
+            bg={'blue.400'}
+            color={'white'}
+            w="full"
+            _hover={{
+              bg: 'blue.500',
+            }}
+            onClick={handleSubmit}>
+            Submit
+          </Button>
         </Stack>
       </Stack>
     </Flex>

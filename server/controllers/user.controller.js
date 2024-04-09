@@ -4,6 +4,18 @@ const bcrypt = require('bcryptjs')
 const session = require('express-session')
 const saltRounds = 10  
 const { check, validationResult } = require('express-validator');
+const fs = require('fs');
+const { v4: uuidv4 } = require('uuid');
+const AWS = require('aws-sdk');
+const multer = require('multer');
+
+const bucketName = process.env.AWS_BUCKET_NAME;
+const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
+});
+
+const upload = multer({ dest: 'uploads/' });
 
 // Create and Save a new User
 const createNewUser = asyncHandler(async (req, res) => {
@@ -41,7 +53,8 @@ const createNewUser = asyncHandler(async (req, res) => {
         lastName,
         username,
         email,
-        password: hashPassword
+        password: hashPassword,
+        imageUrl: 'https://bit.ly/broken-link'
     })
 
     // If account is created successfully
@@ -148,7 +161,7 @@ const changePassword = asyncHandler(async (req, res) => {
 
 const editProfile = asyncHandler(async (req, res) => {
     const userId = req.params.id;
-    const { firstName, lastName, bio, age, countriesVisited } = req.body;
+    const { firstName, lastName, bio, age, countriesVisited, imageUrl } = req.body;
   
     try {
       const user = await User.findById(userId);
@@ -161,7 +174,8 @@ const editProfile = asyncHandler(async (req, res) => {
       user.lastName = lastName;
       user.bio = bio;
       user.age = age;
-      user.countriesVisited = countriesVisited; 
+      user.imageUrl = imageUrl
+      user.countriesVisited = countriesVisited
       await user.save();
   
       res.status(200).json({ message: 'User profile updated', user });
@@ -209,7 +223,25 @@ const logout = asyncHandler(async (req, res) => {
     }))
 });
 
+// Upload profile picture
 
+const uploadProfilePicture = async (req, res) => {
+    try {
+        const fileContent = fs.readFileSync(req.file.path);
+        const params = {
+            Bucket: bucketName,
+            Key: `profile_pictures/${uuidv4()}.${req.file.mimetype.split('/')[1]}`,
+            Body: fileContent,
+            ContentType: "image/jpg, image/png, image/jpeg"
+        };
+        const data = await s3.upload(params).promise();
+        // Save data.Location (S3 URL) in MongoDB
+        res.status(200).send({ url: data.Location });
+    } catch (error) {
+        console.error('Error uploading image to S3:', error);
+        res.status(500).send({ error: 'Failed to upload image' });
+    }
+  };
 
 
 module.exports = {
@@ -219,5 +251,6 @@ module.exports = {
     changePassword,
     editProfile,
     deleteUser,
-    logout
+    logout,
+    uploadProfilePicture
 }

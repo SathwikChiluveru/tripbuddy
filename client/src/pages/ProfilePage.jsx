@@ -8,7 +8,7 @@ export default function ProfilePage() {
   const [userData, setUserData] = useState(null)
 
   useEffect(() => {
-    axios.get('http://localhost:3000/api/user/getUserById/6613ac4dc6160cf638d224d4')
+    axios.get('http://localhost:3000/api/user/getUserById/66156aed7a885100349dd43c')
       .then(response => {
         setUserData(response.data);
       })
@@ -37,7 +37,7 @@ export default function ProfilePage() {
                 borderRadius="10"
                 boxSize={['120px', '150px']}
                 objectFit='cover'
-                src='https://bit.ly/dan-abramov' 
+                src={userData.imageUrl} 
                 alt='User Profile'
                 marginLeft={['0', '30px']} 
                 marginTop={['10px', '50px']} 
