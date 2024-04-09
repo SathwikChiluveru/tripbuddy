@@ -14,6 +14,7 @@ const tripSchema = new mongoose.Schema({
   categories: [{ type: String }],
   tags: [{type: String}],
   description: { type: String },
+  imageUrl: { type: String },
 }, { timestamps: true }); // Adds timestamps for createdAt and updatedAt
 
 // Virtual property to calculate available slots left

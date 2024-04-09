@@ -1,5 +1,8 @@
 const express = require('express')
 const router = express.Router()
+const multer = require('multer');
+
+const upload = multer({ dest: 'uploads/' });
 
 const tripController = require('../controllers/trip.controller')
 // const authenticateUser = require('../middleware/auth.js')
@@ -12,6 +15,8 @@ router.get('/getTripById/:id', tripController.getTripById)
 router.delete('/:id', tripController.deleteTrip)
 router.post('/leaveTrip/:tripId', tripController.leaveTrip)
 router.get('/getTrips', tripController.getTrips)
+router.post('/upload', upload.single('image'), tripController.uploadImage);
+
 
 
 

@@ -24,13 +24,19 @@ import {
 import { ChevronLeftIcon } from "@chakra-ui/icons"
 import { useState } from 'react';
 import axios from 'axios';
+import UploadImage from '../components/UploadImage'
 export default function CreateTrip() {
 
     const [newCategory, setNewCategory] = useState('');
     const [categories, setCategories] = useState([]);
     const [newTag, setNewTag] = useState('');
     const [tags, setTags] = useState([]);
+    const [selectedImage, setSelectedImage] = useState(null);
     const toast = useToast();
+
+    const handleImageDrop = (acceptedFiles) => {
+        setSelectedImage(acceptedFiles[0]);
+    };
 
     const hostId = '6613ac4dc6160cf638d224d4';
 
@@ -43,24 +49,9 @@ export default function CreateTrip() {
         endDate: '',
         availableSlots: 0,
         categories: [],
-        tags: []
+        tags: [],
+        imageUrl: ''
     });
-
-    // const handleChange = (e) => {
-    //     if (e.target.id === 'Tags' ) {
-    //       // For countries visited input field
-    //       setNewTag(e.target.value);
-    //     } else if (e.target.id === 'Category') {
-    //       // For bio textarea
-    //       setNewCategory(e.target.value)
-    //     } else if (e.target.id === 'description') {
-    //         // For bio textarea
-    //         setFormData({ ...formData, description: e.target.value }); 
-    //     } else {
-    //       // For other input fields
-    //       setFormData({ ...formData, [e.target.id]: e.target.value });
-    //     }
-    // };
 
     const handleSubmit = async () => {
         try {
@@ -69,6 +60,11 @@ export default function CreateTrip() {
             const startDate = new Date(formData.startDate);
             const endDate = new Date(formData.endDate);
             const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+            const imageData = new FormData();
+            imageData.append('image', selectedImage);
+
+            const imageResponse = await axios.post('http://localhost:3000/api/trip/upload', imageData)
 
             const tripData = {
                 hostId: hostId,
@@ -83,6 +79,7 @@ export default function CreateTrip() {
                 totalSlots: formData.availableSlots,
                 city: formData.city,
                 country: formData.country,
+                imageUrl: imageResponse.data.url
             };
 
             const response = await axios.post('http://localhost:3000/api/trip/createTrip', tripData);
@@ -254,13 +251,8 @@ export default function CreateTrip() {
                     <Box marginBottom="20">
                         <FormLabel fontSize={'24px'}>Image <Text as='sup' color={'red'}>*</Text> </FormLabel>
                         <Box>
-                                <Image
-                                    objectFit='cover'
-                                    maxW={{ base: '100%', sm: '200px' }}
-                                    src={'https://placehold.co/200x200'}
-                                    alt='Test Picture'
-                                />
-                            </Box>
+                           <UploadImage onDrop={handleImageDrop}/>     
+                        </Box>
                     </Box>
                 </Stack>
             </Stack>

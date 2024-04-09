@@ -1,10 +1,24 @@
 const Trip = require('../models/trip.model');
 const User = require('../models/user.model');
 const asyncHandler = require('express-async-handler');
+const fs = require('fs');
+const { v4: uuidv4 } = require('uuid');
+const AWS = require('aws-sdk');
+const multer = require('multer');
+
+
+const bucketName = process.env.AWS_BUCKET_NAME;
+const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
+});
+
+const upload = multer({ dest: 'uploads/' });
+
 
 // Create a new trip
 const createTrip = asyncHandler(async (req, res) => {
-  const { hostId, host, title, startDate, endDate, duration, totalSlots, country, city, categories, tags, description } = req.body;
+  const { hostId, host, title, startDate, endDate, duration, totalSlots, country, city, categories, tags, description, imageUrl } = req.body;
 
   // When session is implemented do this:
   //host : req.session.user.username,
@@ -24,6 +38,7 @@ const createTrip = asyncHandler(async (req, res) => {
     categories,
     tags,
     description,
+    imageUrl
   });
 
   console.log(newTrip)
@@ -248,6 +263,26 @@ const getTrips = asyncHandler(async (req, res) =>{
 
 //Search API has to be implemented later on
 
+// Upload trip image
+
+const uploadImage = async (req, res) => {
+  try {
+      const fileContent = fs.readFileSync(req.file.path);
+      const params = {
+          Bucket: bucketName,
+          Key: `trip_images/${uuidv4()}.${req.file.mimetype.split('/')[1]}`,
+          Body: fileContent,
+          ContentType: "image/jpg, image/png, image/jpeg"
+      };
+      const data = await s3.upload(params).promise();
+      // Save data.Location (S3 URL) in MongoDB
+      res.status(200).send({ url: data.Location });
+  } catch (error) {
+      console.error('Error uploading image to S3:', error);
+      res.status(500).send({ error: 'Failed to upload image' });
+  }
+};
 
 
-module.exports = { createTrip, joinTrip, getAllTrips, editTrip, getTripById, deleteTrip, leaveTrip, getTrips };
+
+module.exports = { createTrip, joinTrip, getAllTrips, editTrip, getTripById, deleteTrip, leaveTrip, getTrips, uploadImage };

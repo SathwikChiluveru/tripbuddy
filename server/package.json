@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test":  "echo \"Running tests...\" && sleep 10 && echo \"Tests completed\""
+    "test": "echo \"Running tests...\" && sleep 10 && echo \"Tests completed\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.1595.0",
     "axios": "^1.6.7",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -20,6 +21,7 @@
     "express-validator": "^7.0.1",
     "google-auth-library": "^9.6.1",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.1.1"
+    "mongoose": "^8.1.1",
+    "multer": "^1.4.5-lts.1"
   }
 }
