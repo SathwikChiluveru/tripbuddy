@@ -26,6 +26,7 @@ import { SmallCloseIcon } from '@chakra-ui/icons'
 import { useState, useRef } from 'react'; 
 import axios from 'axios';
 import { Link } from 'react-router-dom'
+import Cookies from 'js-cookie';
 
 export default function EditProfile() {
   const [countriesVisited, setCountriesVisited] = useState([]);
@@ -35,6 +36,9 @@ export default function EditProfile() {
   const [imageUrl, setImageUrl] = useState('')
   const toast = useToast();
   const fileInputRef = useRef(null);
+
+  const sessionId = Cookies.get('sessionId')
+
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -123,7 +127,7 @@ export default function EditProfile() {
       const updatedFormData = { ...formData, countriesVisited, imageUrl: updatedImageUrl };
       console.table(updatedFormData)
       console.log("Updated", updatedFormData)
-      await axios.put(`http://localhost:3000/api/user/66156aed7a885100349dd43c/editProfile`, updatedFormData);
+      await axios.put(`http://localhost:3000/api/user/${sessionId}/editProfile`, updatedFormData);
 
       toast({
         title: 'Profile Updated Successfully.',

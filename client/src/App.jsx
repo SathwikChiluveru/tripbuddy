@@ -11,6 +11,7 @@ import Register from './pages/Register'
 import ProfilePage from './pages/ProfilePage'
 import EditProfile from './pages/EditProfile';
 import CreateTrip from './pages/CreateTrip';
+import { PlayGround } from './pages/PlayGround';
 
 const App = () => {
   return (
@@ -24,7 +25,7 @@ const App = () => {
           <Route path="/profile" element={<ProfilePage/>}/>
           <Route path="/editprofile" element={<EditProfile/>}/>
           <Route path="/createtrip" element={<CreateTrip/>}/>
-
+          <Route path="/playground" element={<PlayGround/>}/>
         </Routes>
       </Box>
       <Footer/>

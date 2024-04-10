@@ -2,13 +2,17 @@ import { useState, useEffect } from 'react'
 import { Stack, Image, Box, Text, Flex } from '@chakra-ui/react';
 import ProfileMap from '../components/ProfileMap'; 
 import axios  from 'axios';
+import Cookies from 'js-cookie';
+import TripCard from '../components/TripCard';
 
 export default function ProfilePage() {
 
   const [userData, setUserData] = useState(null)
 
   useEffect(() => {
-    axios.get('http://localhost:3000/api/user/getUserById/66156aed7a885100349dd43c')
+    const sessionId = Cookies.get('sessionId')
+    console.log("Session ID:", sessionId)
+    axios.get(`http://localhost:3000/api/user/getUserById/${sessionId}`)
       .then(response => {
         setUserData(response.data);
       })
@@ -57,6 +61,7 @@ export default function ProfilePage() {
 
       <Box mt={8} ml={8}>
         <Text fontSize="2xl" fontWeight="bold">Trips Created</Text>
+        <TripCard userData={userData}/>
       </Box>
       <Box>
         <Text mt={8} ml={8} fontSize="2xl" fontWeight="bold">Places Visited</Text>

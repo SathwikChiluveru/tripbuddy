@@ -1,12 +1,12 @@
-import { Card, Image, Stack, CardBody, Heading, Text, CardFooter, Button, Box, HStack, Tag, Spinner, Flex, Link } from '@chakra-ui/react';
-import { ArrowForwardIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
+/* eslint-disable react/prop-types */
+import { Card, Image, Stack, CardBody, Heading, Text, CardFooter, Button, Box, HStack, Tag, Flex, Link } from '@chakra-ui/react';
 
-export default function TripCard() {
+export default function TripCard({ userData }) {
+
+  console.log(userData)
+
   return (
     <Box m={'auto'} width={'full'} minH={'260px'}>
-        <Flex m={'auto'} justifyContent={'center'} minH={'inherit'} alignItems={'center'}>
-          {/* <Spinner /> */}
-        </Flex> 
         <Card
           direction={{ base: 'column', sm: 'row' }}
           overflow='hidden'
@@ -21,22 +21,11 @@ export default function TripCard() {
                   Sports
                 </Tag>
               </HStack>
-              <Heading size='md'>Test Post</Heading>
+              <Heading size='md'>{userData._id}</Heading>
               <Text py='2' noOfLines={[3]} pb={0}>
                 Test Description
               </Text>
             </CardBody>
-
-            <CardFooter alignItems={'center'}>
-              <Link>
-                <Button variant='solid' colorScheme='red' mr={5}>
-                  Check Buddies
-                  <ArrowForwardIcon mt={0.5} ml={1} />
-                </Button>
-              </Link>
-              <EditIcon boxSize={5} mr={'15px'} cursor={'pointer'}/>
-              <DeleteIcon boxSize={5} cursor={'pointer'} />
-            </CardFooter>
           </Stack>
 
           <Image

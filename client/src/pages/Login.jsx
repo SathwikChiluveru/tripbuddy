@@ -15,9 +15,10 @@ import {
   } from '@chakra-ui/react'
   import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
   import { useNavigate } from 'react-router-dom';
-  import React, { useState } from 'react';
+  import { useState } from 'react';
   import { useGoogleLogin } from "@react-oauth/google";
   import axios from "axios";
+  import Cookie from 'js-cookie'
   import bgImage from '../assets/sign-up.jpg'; 
   import { FcGoogle } from 'react-icons/fc'
 
@@ -43,9 +44,10 @@ import {
       try {
           const response = await axios.post("http://localhost:3000/api/auth/login", formData);
           // Handle the response
-          console.log(response.data);
+          console.log(response.data.session.id);
+          Cookie.set('sessionId', response.data.session.id)
           // Redirect or perform other actions based on the response
-          navigate("/");
+          navigate("/main");
       } catch (error) {
           console.error('Axios Error:', error);
   
@@ -80,7 +82,7 @@ import {
             });
             console.log(response.data)
             // Handle the response using the provided function
-            navigate("/");
+            navigate("/profile");
           } catch (error) {
             console.log(error);
           }
