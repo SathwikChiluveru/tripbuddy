@@ -3,7 +3,7 @@ import { Stack, Image, Box, Text, Flex } from '@chakra-ui/react';
 import ProfileMap from '../components/ProfileMap'; 
 import axios  from 'axios';
 import Cookies from 'js-cookie';
-import TripCard from '../components/TripCard';
+// import TripCard from '../components/TripCard';
 
 export default function ProfilePage() {
 
@@ -15,6 +15,7 @@ export default function ProfilePage() {
     axios.get(`http://localhost:3000/api/user/getUserById/${sessionId}`)
       .then(response => {
         setUserData(response.data);
+        console.log(response.data)
       })
       .catch(error => {
         console.error('Error fetching user data:', error);
@@ -61,7 +62,6 @@ export default function ProfilePage() {
 
       <Box mt={8} ml={8}>
         <Text fontSize="2xl" fontWeight="bold">Trips Created</Text>
-        <TripCard userData={userData}/>
       </Box>
       <Box>
         <Text mt={8} ml={8} fontSize="2xl" fontWeight="bold">Places Visited</Text>
