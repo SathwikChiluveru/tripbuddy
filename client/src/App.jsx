@@ -12,6 +12,7 @@ import ProfilePage from './pages/ProfilePage'
 import EditProfile from './pages/EditProfile';
 import CreateTrip from './pages/CreateTrip';
 import { PlayGround } from './pages/PlayGround';
+import MyTrip from './pages/MyTrip';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/editprofile" element={<EditProfile/>}/>
           <Route path="/createtrip" element={<CreateTrip/>}/>
           <Route path="/playground" element={<PlayGround/>}/>
+          <Route path="/mytrips" element={<MyTrip/>}/>
         </Routes>
       </Box>
       <Footer/>

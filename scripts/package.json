@@ -2,9 +2,9 @@
   "name": "scripts",
   "version": "1.0.0",
   "description": "",
-  "main": "createUsers.js",
+  "main": "createTrip.js",
   "scripts": {
-    "start": "node createUsers.js",
+    "start": "node createTrip.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

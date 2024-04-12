@@ -42,13 +42,13 @@ export default function Navbar({ sessionId }) {
 
   return (
     
-      <Box bg={useColorModeValue('gray.100', 'gray.900')} zIndex={'5'} px={4} top={'0'} position={'sticky'}>
+      <Box bg={useColorModeValue('#0c6ff0', 'gray.900')} zIndex={'5'} px={4} top={'0'} position={'sticky'}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <Box>Logo</Box>
 
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={7}>
-              <Button onClick={toggleColorMode}>
+              <Button bg={useColorModeValue('#0c6ff0', 'gray.900')} onClick={toggleColorMode}>
                 {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
               </Button>
 

@@ -1,29 +1,43 @@
 import { useState, useEffect } from 'react'
-import { Stack, Image, Box, Text, Flex } from '@chakra-ui/react';
+import { Stack, Image, Box, Text, Flex, Grid } from '@chakra-ui/react';
 import ProfileMap from '../components/ProfileMap'; 
 import axios  from 'axios';
 import Cookies from 'js-cookie';
-// import TripCard from '../components/TripCard';
-
+import TripComponent from './../components/TripComponent';
+import Navbar from './../components/Navbar';
 export default function ProfilePage() {
 
   const [userData, setUserData] = useState(null)
+  const [trips, setTrips] = useState([]);
+  const [sessionID, setSessionID] = useState();
 
   useEffect(() => {
     const sessionId = Cookies.get('sessionId')
+    setSessionID(sessionId)
     console.log("Session ID:", sessionId)
     axios.get(`http://localhost:3000/api/user/getUserById/${sessionId}`)
       .then(response => {
         setUserData(response.data);
-        console.log(response.data)
+        fetchTrips(sessionId);
       })
       .catch(error => {
         console.error('Error fetching user data:', error);
       });
   }, []);
 
+  const fetchTrips = async (sessionId) => {
+    try {
+      const response = await axios.get(`http://localhost:3000/api/trip/getTripById/${sessionId}`);
+      setTrips(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching trips:", error);
+    }
+  };
+
   return (
     <>
+      <Navbar sessionId={sessionID}/>
       {userData && (
         <Flex
           w={'full'}
@@ -62,6 +76,11 @@ export default function ProfilePage() {
 
       <Box mt={8} ml={8}>
         <Text fontSize="2xl" fontWeight="bold">Trips Created</Text>
+        <Grid templateColumns="repeat(3, 1fr)" gap={8} mt={4}>
+          {trips.map((trip, index) => (
+            <TripComponent key={index} trip={trip} />
+          ))}
+        </Grid>
       </Box>
       <Box>
         <Text mt={8} ml={8} fontSize="2xl" fontWeight="bold">Places Visited</Text>

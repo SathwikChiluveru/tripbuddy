@@ -1,43 +1,39 @@
 /* eslint-disable react/prop-types */
-import React from "react";
-import {
-	Box, Image, Badge, Text, Stack,
-	useColorMode, Button, Flex, Spacer
-}
-	from "@chakra-ui/react";
+// import React from "react";
+import { Box, Image, Badge, Text, Stack, useColorMode } from "@chakra-ui/react";
 
-function TripComponent() {
+function TripComponent({ trip }) {
 	const { colorMode } = useColorMode();
 
 	return (
 		<div>
-			<Box w="300px" rounded="20px"
+			<Box w="350px" rounded="20px"
 				overflow="hidden" bg={
 					colorMode ===
 						"dark" ?
-						"gray.700" :
-						"gray.200"}
+						"gray.100" :
+						"gray.100"}
+
+						_hover={{background: "gray.200", color: "gray.700"}}
 				mt={10}>
-				<Image src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20210727094649/img1.jpg"
-					alt="Card Image" boxSize="300px">
+				<Image src={trip.imageUrl} alt="Card Image" boxSize="350px">
 				</Image>
 				<Box p={5}>
-					<Stack align="center">
-						<Badge variant="solid"
-							colorScheme="green"
-							rounded="full" px={2}>
-							Skiing
+				<Stack align="center">
+					{trip.categories.map((category, index) => (
+						<Badge key={index} variant="solid" colorScheme="teal" rounded="full" px={2} mr={2}>
+						{category}
 						</Badge>
-					</Stack>
+					))}
+				</Stack>
 					<Stack align="center">
 						<Text as="h2"
 							fontWeight="normal"
 							my={2} >
-							Japan Trip, Tokyo
+							{trip.city}, {trip.country}
 						</Text>
 						<Text fontWeight="light">
-							First trip this year
+							{trip.description}
 						</Text>
 					</Stack>
 				</Box>

@@ -113,15 +113,18 @@ const getAllTrips = asyncHandler(async (req, res) => {
 });
 
 const getTripById = asyncHandler(async (req, res) => {
-  Trip
-      .findById(req.params.id)
-      .then(trip => {
-          return res.status(200).send(trip)
-      })
-      .catch(error => {
-          console.log(error);
-      })
-})
+  try {
+    const trips = await Trip.find({ hostId: req.params.hostId });
+    if (!trips || trips.length === 0) {
+      return res.status(404).json({ message: 'No trips found for the specified host' });
+    }
+    return res.status(200).json(trips);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 const editTrip = asyncHandler(async (req, res) =>{
   const tripId = req.params.id
