@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { Card, Image, Stack, CardBody, Heading, Text, CardFooter, Button, Box, HStack, Tag, Flex, Link } from '@chakra-ui/react';
 
-export default function TripCard({ userData }) {
+export default function TripCard({  }) {
 
-  console.log(userData)
+  // console.log(userData)
 
   return (
     <Box m={'auto'} width={'full'} minH={'260px'}>
@@ -21,7 +21,7 @@ export default function TripCard({ userData }) {
                   Sports
                 </Tag>
               </HStack>
-              <Heading size='md'>{userData._id}</Heading>
+              <Heading size='md'>Hi</Heading>
               <Text py='2' noOfLines={[3]} pb={0}>
                 Test Description
               </Text>

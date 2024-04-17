@@ -9,7 +9,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuDivider,
+  MenuDivider,  
   useColorModeValue,
   Stack,
   useColorMode,
@@ -20,7 +20,6 @@ import { useState, useEffect } from 'react';
 import { MoonIcon, SunIcon, EditIcon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-
 
 export default function Navbar({ sessionId }) {
   const { colorMode, toggleColorMode } = useColorMode()
@@ -38,13 +37,11 @@ export default function Navbar({ sessionId }) {
     }
   }, [sessionId]);
 
-  console.log(userData)
-
   return (
     
       <Box bg={useColorModeValue('#0c6ff0', 'gray.900')} zIndex={'5'} px={4} top={'0'} position={'sticky'}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-          <Box>Logo</Box>
+          <Box>TripBuddy</Box>
 
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={7}>
@@ -91,6 +88,7 @@ export default function Navbar({ sessionId }) {
                   <br />
                   <MenuDivider />
                   <MenuItem>My Trips</MenuItem>
+                  <MenuItem>Chat</MenuItem>
                   <MenuItem>Logout</MenuItem>
                 </MenuList>
               </Menu>

@@ -13,6 +13,7 @@ import EditProfile from './pages/EditProfile';
 import CreateTrip from './pages/CreateTrip';
 import { PlayGround } from './pages/PlayGround';
 import MyTrip from './pages/MyTrip';
+import { ViewTrip } from './pages/ViewTrip';
 
 const App = () => {
   return (
@@ -28,6 +29,8 @@ const App = () => {
           <Route path="/createtrip" element={<CreateTrip/>}/>
           <Route path="/playground" element={<PlayGround/>}/>
           <Route path="/mytrips" element={<MyTrip/>}/>
+          <Route path="/viewtrip/:tripId" element={<ViewTrip/>}/>
+
         </Routes>
       </Box>
       <Footer/>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Stack, Image, Box, Text, Flex, Grid } from '@chakra-ui/react';
+import { Stack, Image, Box, Text, Flex, Grid, useColorModeValue, useColorMode } from '@chakra-ui/react';
 import ProfileMap from '../components/ProfileMap'; 
 import axios  from 'axios';
 import Cookies from 'js-cookie';
@@ -10,6 +10,9 @@ export default function ProfilePage() {
   const [userData, setUserData] = useState(null)
   const [trips, setTrips] = useState([]);
   const [sessionID, setSessionID] = useState();
+  // eslint-disable-next-line no-unused-vars
+  const { colorMode, toggleColorMode } = useColorMode()
+
 
   useEffect(() => {
     const sessionId = Cookies.get('sessionId')
@@ -42,9 +45,10 @@ export default function ProfilePage() {
         <Flex
           w={'full'}
           h={['auto', '40vh']} 
-          backgroundImage={
-            'url(https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)'
-          }
+          // backgroundImage={
+          //   'url(https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)'
+          // }
+          bg={useColorModeValue('#0c6ff0', 'gray.900')}
           backgroundSize={'cover'}
           backgroundPosition={'center center'}
           alignItems="center"

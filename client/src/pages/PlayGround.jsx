@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import { TripParticipants } from '../components/TripParticipants';
-import { ViewTrip } from './ViewTrip';
+import TripCard from './../components/TripCard';
 
 
 export const PlayGround = () => {
@@ -8,7 +8,7 @@ export const PlayGround = () => {
     <Box>
       <TripParticipants/>
       <TripParticipants/>
-      <ViewTrip/>
+      <TripCard/>
     </Box>
   );
 };

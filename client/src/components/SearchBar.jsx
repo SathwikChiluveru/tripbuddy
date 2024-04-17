@@ -12,6 +12,7 @@ function SearchBar() {
                 pr='4.5rem'
                 placeholder=''
                 borderRadius={20}
+                focusBorderColor='black'
             />
             <InputRightElement width='3rem' bg='inherit'>
                 <Button h='1.75rem' size='sm' borderRadius={30}>

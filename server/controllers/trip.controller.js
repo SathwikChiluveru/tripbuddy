@@ -125,6 +125,17 @@ const getTripById = asyncHandler(async (req, res) => {
   }
 });
 
+const getTripByTripId = asyncHandler(async (req, res) => {
+  Trip
+      .findById(req.params.id)
+      .then(trip => {
+          return res.status(200).send(trip)
+      })
+      .catch(error => {
+          console.log(error);
+      })
+})
+
 
 const editTrip = asyncHandler(async (req, res) =>{
   const tripId = req.params.id
@@ -288,4 +299,4 @@ const uploadImage = async (req, res) => {
 
 
 
-module.exports = { createTrip, joinTrip, getAllTrips, editTrip, getTripById, deleteTrip, leaveTrip, getTrips, uploadImage };
+module.exports = { createTrip, joinTrip, getAllTrips, editTrip, getTripById, getTripByTripId, deleteTrip, leaveTrip, getTrips, uploadImage };

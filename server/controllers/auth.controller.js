@@ -66,8 +66,16 @@ const handleGoogleCallback = async (req, res) => {
     const { tokens } = await oAuth2Client.getToken(code);
     await oAuth2Client.setCredentials(tokens);
     const userAuth = oAuth2Client.credentials;
-    data = await getGoogleUserData(userAuth.access_token)
-    res.status(200).json({ data: data})
+
+    const userData = await getGoogleUserData(userAuth.access_token)
+    let user = await User.findOne({ email: userData.email });
+
+    req.session.user = {
+        id: user._id,
+        email: user.email,
+        username: user.username
+    };
+    res.status(200).json({ message: 'Login successful', session: req.session.user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'OAuth callback failed' });

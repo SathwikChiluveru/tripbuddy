@@ -80,7 +80,9 @@ import {
             const response = await axios.post("http://localhost:3000/api/auth/google/callback", {
               code,
             });
-            console.log(response.data)
+            console.log("Frontend:", response.data)
+            
+            Cookie.set('sessionId', response.data.session.id)
             // Handle the response using the provided function
             navigate("/profile");
           } catch (error) {
@@ -106,9 +108,6 @@ import {
         <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
           <Stack align={'center'}>
             <Heading fontSize={'4xl'}>Sign in to your account</Heading>
-            <Text fontSize={'lg'} color={'gray.600'}>
-              to enjoy all of our cool <Text color={'blue.400'}>features</Text> ✌️
-            </Text>
           </Stack>
           <Box
             rounded={'lg'}
@@ -135,10 +134,10 @@ import {
                 </InputRightElement>
               </InputGroup>
               </FormControl>
-              <Stack spacing={10}>
+              <Stack spacing={5} mt={5}>
                 <Stack
                   direction={{ base: 'column', sm: 'row' }}
-                  align={'start'}
+                  align={'start'} mb={1}
                   justify={'space-between'}>
                   <Checkbox>Remember me</Checkbox>
                   <Text color={'blue.400'}>Forgot password?</Text>

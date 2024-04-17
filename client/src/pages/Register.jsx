@@ -175,8 +175,8 @@ export default function Register() {
           <Heading fontSize={'4xl'} textAlign={'center'}>
             Sign up
           </Heading>
-          <Text fontSize={'lg'} color={'gray.600'}>
-            to enjoy all of our cool features ✌️
+          <Text fontSize={'lg'} color={'gray.700'}>
+            to find travel buddies and find a community you belong!
           </Text>
         </Stack>
         <Box
@@ -247,7 +247,7 @@ export default function Register() {
             <Stack pt={6}>
             <Text align={'center'}>
               Already a user?{' '}
-              <Link to="/login"style={{ color: 'blue' }}>
+              <Link to="/login" style={{ color: '#3182CE' }}>
                 Login
               </Link>
             </Text>
