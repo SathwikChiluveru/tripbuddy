@@ -25,7 +25,7 @@ import {
 import { SmallCloseIcon } from '@chakra-ui/icons'
 import { useState, useRef } from 'react'; 
 import axios from 'axios';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie';
 
 export default function EditProfile() {
@@ -36,6 +36,8 @@ export default function EditProfile() {
   const [imageUrl, setImageUrl] = useState('')
   const toast = useToast();
   const fileInputRef = useRef(null);
+  const navigate = useNavigate();
+
 
   const sessionId = Cookies.get('sessionId')
 
@@ -136,6 +138,7 @@ export default function EditProfile() {
         duration: 5000,
         isClosable: true,
       })
+      navigate('/profile')
     } catch (error) {
       console.error('Error updating profile:', error);
       alert('An error occurred while updating the profile.');

@@ -24,7 +24,10 @@ import {
 import { ChevronLeftIcon } from "@chakra-ui/icons"
 import { useState } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie'
 import UploadImage from '../components/UploadImage'
+import { useNavigate } from 'react-router-dom'
+
 export default function CreateTrip() {
 
     const [newCategory, setNewCategory] = useState('');
@@ -32,17 +35,43 @@ export default function CreateTrip() {
     const [newTag, setNewTag] = useState('');
     const [tags, setTags] = useState([]);
     const [selectedImage, setSelectedImage] = useState(null);
+    const [userName, setUserName] = useState(null)
     const toast = useToast();
+    const navigate = useNavigate();
+
 
     const handleImageDrop = (acceptedFiles) => {
         setSelectedImage(acceptedFiles[0]);
     };
 
-    const hostId = '6613ac4dc6160cf638d224d4';
+    const sessionId = Cookies.get('sessionId');
+    console.log("SessionID:", sessionId);
 
+    fetch('http://localhost:3000/api/user/getUserById/661581a19491c849c680c0ec')
+    .then(response => {
+        // Check if the response is successful
+        if (!response.ok) {
+        throw new Error('Network response was not ok');
+        }
+        // Parse the JSON response
+        return response.json();
+    })
+    .then(data => {
+        // Extract the username from the response data
+        const username = data.username;
+        setUserName(username)
+        console.log('Username:', username);
+        // Now you can use the username in your application as needed
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
+
+    console.log(userName)
+    
     const [formData, setFormData] = useState({
-        hostId: hostId,
-        host: "sathwikch",
+        hostId: sessionId,
+        host: userName,
         title: '',
         description: '',
         startDate: '',
@@ -67,8 +96,8 @@ export default function CreateTrip() {
             const imageResponse = await axios.post('http://localhost:3000/api/trip/upload', imageData)
 
             const tripData = {
-                hostId: hostId,
-                host: "sathwikch",
+                hostId: sessionId,
+                host: userName,
                 title: formData.title,
                 description: formData.description,
                 categories,
@@ -91,6 +120,8 @@ export default function CreateTrip() {
                 duration: 5000,
                 isClosable: true,
             })
+
+            navigate('/main')
 
             // Optionally, redirect to another page or display a success message
         } catch (error) {

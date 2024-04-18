@@ -20,10 +20,13 @@ import { useState, useEffect } from 'react';
 import { MoonIcon, SunIcon, EditIcon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom'
 
 export default function Navbar({ sessionId }) {
   const { colorMode, toggleColorMode } = useColorMode()
   const [userData, setUserData] = useState(null)
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (sessionId) {
@@ -37,12 +40,21 @@ export default function Navbar({ sessionId }) {
     }
   }, [sessionId]);
 
+  const handleLogout = () => {
+    // Perform logout logic here, such as clearing session token
+    // For example, if you're using cookies:
+    Cookies.remove('sessionId');
+  
+    // Redirect user to login page
+    navigate('/')
+
+  };
+
   return (
     
       <Box bg={useColorModeValue('#0c6ff0', 'gray.900')} zIndex={'5'} px={4} top={'0'} position={'sticky'}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-          <Box>TripBuddy</Box>
-
+          <Link to="/main">TRIPBUDDY</Link>
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={7}>
               <Button bg={useColorModeValue('#0c6ff0', 'gray.900')} onClick={toggleColorMode}>
@@ -89,7 +101,7 @@ export default function Navbar({ sessionId }) {
                   <MenuDivider />
                   <MenuItem>My Trips</MenuItem>
                   <MenuItem>Chat</MenuItem>
-                  <MenuItem>Logout</MenuItem>
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </MenuList>
               </Menu>
               <Stack

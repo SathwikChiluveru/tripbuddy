@@ -38,7 +38,8 @@ const createTrip = asyncHandler(async (req, res) => {
     categories,
     tags,
     description,
-    imageUrl
+    imageUrl,
+    tripMates: [hostId],
   });
 
   console.log(newTrip)
@@ -63,45 +64,44 @@ const createTrip = asyncHandler(async (req, res) => {
 });
 
 const joinTrip = asyncHandler(async (req, res) => {
-  // const { userId } = req.session.user.id;
   const { userId } = req.body;
   const { tripId } = req.params;
-  
+
   console.log('User ID:', userId);
   console.log('Trip ID:', tripId);
 
   try {
-    const trip = await Trip.findById(tripId);
+      const trip = await Trip.findById(tripId);
 
-    if (!trip) {
-      return res.status(404).json({ message: 'Trip not found' });
-    }
+      if (!trip) {
+          return res.status(404).json({ message: 'Trip not found' });
+      }
 
-    if (trip.tripMates.length >= trip.totalSlots) {
-      return res.status(400).json({ message: 'Trip is already full' });
-    }
+      if (trip.tripMates.length >= trip.totalSlots) {
+          return res.status(400).json({ message: 'Trip is already full' });
+      }
 
-    // Check if user is already in tripMates array
-    if (trip.tripMates.includes(userId)) {
-      return res.status(400).json({ message: 'User is already part of this trip' });
-    }
+      // Check if user is already in tripMates array
+      const isUserAlreadyJoined = trip.tripMates.includes(userId);
+        if (isUserAlreadyJoined) {
+            return res.status(409).json({ message: 'User is already part of this trip' });
+      }
 
-    // Add the user to the tripMates array in the Trip Model
-    const user = await User.findById(userId);
-    trip.tripMates.push(user); 
-    await trip.save();
+      // Add the user to the tripMates array in the Trip Model
+      trip.tripMates.push(userId); 
+      await trip.save();
 
-    // Add trip ID and name to tripsJoined array in the User Model
-    user.tripsJoined.push(trip);
-    await user.save();
+      // Add trip ID and name to tripsJoined array in the User Model
+      const user = await User.findById(userId);
+      user.tripsJoined.push(tripId);
+      await user.save();
 
-    res.status(200).json({ message: 'User joined the trip successfully', trip });
+      res.status(200).json({ message: 'User joined the trip successfully', trip });
   } catch (error) {
-    res.status(500).json({ message: error.message });
-
+      res.status(500).json({ message: error.message });
   }
-
 });
+
 
 const getAllTrips = asyncHandler(async (req, res) => {
   try {
