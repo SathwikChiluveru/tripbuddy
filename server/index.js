@@ -6,6 +6,8 @@ const cors = require('cors');
 const path = require('path');
 const connectDB = require('./config/db');
 const corsOptions = require('./config/corsOptions');
+const { Server } = require('socket.io');
+const { createServer } = require("http");
 
 require('dotenv').config();
 
@@ -24,13 +26,28 @@ app.use(
     })
 );
 
-app.use(cors(corsOptions));
+app.use(cors({
+    origin: 'http://localhost:5173'
+}));
+
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
-});
+// Create an HTTP server instance
+const httpServer = createServer(app);
+
+// Pass the server instance to the Socket.IO constructor
+const io = new Server(httpServer, {
+    cors: {
+      origin: "http://localhost:5173"
+    }
+  });
+// For express servers, but we are using Socket IO
+// app.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}.`);
+// });
+
+httpServer.listen(3000);
 
 app.use('/api/user', require('./routes/user.route'));
 app.use('/api/trip', require('./routes/trip.route'));
@@ -42,4 +59,26 @@ app.get('/', (req, res) => {
 
 app.get('/healthcheck', (req, res) => {
     res.send('Health check completed');
+});
+
+io.on('connection', (socket) => {
+    console.log('A user connected');
+
+    // Handle socket disconnection
+    socket.on('disconnect', () => {
+        console.log('A user disconnected');
+    });
+
+    // Join a room based on trip ID
+    socket.on('joinRoom', (tripId) => {
+        socket.join(tripId);
+        console.log(`User joined room ${tripId}`);
+    });
+
+    // Listen for chat messages
+    socket.on('chatMessage', ({ tripId, message }) => {
+        // Broadcast the message to all users in the room
+        io.to(tripId).emit('message', message);
+    });
+    
 });

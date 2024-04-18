@@ -15,6 +15,8 @@ import { PlayGround } from './pages/PlayGround';
 import MyTrip from './pages/MyTrip';
 import { ViewTrip } from './pages/ViewTrip';
 import AccountprofilePage from './pages/AccountProfilePage';
+import ChatPage from './pages/ChatPage';
+
 
 const App = () => {
   return (
@@ -32,6 +34,8 @@ const App = () => {
           <Route path="/mytrips" element={<MyTrip/>}/>
           <Route path="/viewtrip/:tripId" element={<ViewTrip/>}/>
           <Route path="/profile/:userId" element={<AccountprofilePage/>} />
+          <Route path="/chat" element={<ChatPage/>}/>
+
 
 
         </Routes>
