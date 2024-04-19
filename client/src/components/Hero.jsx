@@ -1,20 +1,15 @@
 import {
-  Flex,
   Container,
   Heading,
   Stack,
   Text,
   Button,
-  Icon,
   Box
 } from '@chakra-ui/react'
-
-import backgroundImage from '../assets/photo-1507525428034-b723cf961d3e.png'
 
 export default function Hero() {
   return (
     <Box
-      // bgImage={`url(${backgroundImage})`}
       bgColor={'#0c6ff0'}
       bgSize="cover"
       minH="500px"
