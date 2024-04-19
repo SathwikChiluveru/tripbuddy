@@ -1,95 +1,92 @@
-import { useState, useEffect } from 'react'
-import { Stack, Image, Box, Text, Flex, Grid, useColorModeValue, useColorMode } from '@chakra-ui/react';
-import ProfileMap from '../components/ProfileMap'; 
-import axios  from 'axios';
+import { useState, useEffect } from 'react';
+import { Box, Card, Image, useColorMode, useColorModeValue, Text, Button, Icon } from '@chakra-ui/react';
+import { InfoOutlineIcon, StarIcon, Search2Icon } from '@chakra-ui/icons';
+import axios from 'axios';
 import Cookies from 'js-cookie';
-import TripComponent from './../components/TripComponent';
+import AboutMe from './../components/Aboutme';
+import MyTrips from './../components/MyTrips';
+import CountriesComponent from './../components/CountriesComponent';
 import Navbar from './../components/Navbar';
-export default function ProfilePage() {
+import { useParams } from "react-router-dom";
 
-  const [userData, setUserData] = useState(null)
-  const [trips, setTrips] = useState([]);
-  const [sessionID, setSessionID] = useState();
-  // eslint-disable-next-line no-unused-vars
-  const { colorMode, toggleColorMode } = useColorMode()
-
-
-  useEffect(() => {
-    const sessionId = Cookies.get('sessionId')
-    setSessionID(sessionId)
-    console.log("Session ID:", sessionId)
-    axios.get(`http://localhost:3000/api/user/getUserById/${sessionId}`)
-      .then(response => {
-        setUserData(response.data);
-        fetchTrips(sessionId);
-      })
-      .catch(error => {
-        console.error('Error fetching user data:', error);
-      });
-  }, []);
-
-  const fetchTrips = async (sessionId) => {
-    try {
-      const response = await axios.get(`http://localhost:3000/api/trip/getTripById/${sessionId}`);
-      setTrips(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.error("Error fetching trips:", error);
-    }
-  };
-
-  return (
-    <>
-      <Navbar sessionId={sessionID}/>
-      {userData && (
-        <Flex
-          w={'full'}
-          h={['auto', '40vh']} 
-          // backgroundImage={
-          //   'url(https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)'
-          // }
-          bg={useColorModeValue('#0c6ff0', 'gray.900')}
-          backgroundSize={'cover'}
-          backgroundPosition={'center center'}
-          alignItems="center"
+const LinkItem = ({ name, icon, onClick }) => {
+    return (
+        <Button
+            display="flex"
+            alignItems="center"
+            justifyContent="flex-start"
+            paddingLeft="16px"
+            height="40px"
+            width="100%"
+            borderRadius="none"
+            _hover={{ bgColor: 'gray.300' }}
+            leftIcon={icon}
+            colorScheme='black'
+            variant="ghost"
+            onClick={onClick}
         >
-          <Stack alignItems={['center', 'start']} justifyItems="center" w="100%">
-            <Flex flexDirection={['column', 'row']}>
-              <Image
-                border={['5px solid white', '5px solid white']} 
-                borderRadius="10"
-                boxSize={['120px', '150px']}
-                objectFit='cover'
-                src={userData.imageUrl} 
-                alt='User Profile'
-                marginLeft={['0', '30px']} 
-                marginTop={['10px', '50px']} 
-              />
-              <Box marginLeft={['0', '50px']} marginTop={['20px', '120px']}>
-                <Text as='b' fontSize={['xl', '4xl']}>{userData.firstName} {userData.lastName}, {userData.age}</Text>
-                <Text fontSize={['sm', 'l']}>@{userData.username}</Text>
-              </Box>
-            </Flex>
-          </Stack>
-        </Flex>
-      )}
-      <Box mt={8} ml={8}>
-        <Text fontSize="2xl" fontWeight="bold">About Me</Text>
-        {userData && <Text>{userData.bio}</Text>}
-      </Box>
+            {name}
+        </Button>
+    );
+};
 
-      <Box mt={8} ml={8}>
-        <Text fontSize="2xl" fontWeight="bold">Trips Created</Text>
-        <Grid templateColumns="repeat(3, 1fr)" gap={8} mt={4}>
-          {trips.map((trip, index) => (
-            <TripComponent key={index} trip={trip} />
-          ))}
-        </Grid>
-      </Box>
-      <Box>
-        <Text mt={8} ml={8} fontSize="2xl" fontWeight="bold">Places Visited</Text>
-        {userData && <ProfileMap countriesVisited={userData.countriesVisited} />}
-      </Box>
-    </>
-  );
+export default function ProfilePage() {
+    const { userId } = useParams();
+    const [selectedLink, setSelectedLink] = useState('aboutMe');
+    const [userData, setUserData] = useState(null);
+    const [trips, setTrips] = useState([]);
+    const [sessionID, setSessionID] = useState(null);
+    const { colorMode, toggleColorMode } = useColorMode();
+
+    const handleLinkClick = (linkName) => {
+        setSelectedLink(linkName);
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const sessionId = Cookies.get('sessionId');
+                setSessionID(sessionId);
+                const userDataResponse = await axios.get(`http://localhost:3000/api/user/getUserById/${userId}`);
+                setUserData(userDataResponse.data);
+                const tripsResponse = await axios.get(`http://localhost:3000/api/trip/getTripById/${userId}`);
+                setTrips(tripsResponse.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, [userId]);
+
+    return (
+        <>
+            <Navbar sessionId={sessionID} />
+            <Box bg={useColorModeValue('white', 'gray.900')} alignItems="center" display="flex">
+                <Box w={'full'} h={['auto', '100vh']} bg={useColorModeValue('white', 'gray.900')} alignItems="center" display="flex">
+                    <Card marginLeft={'20'} marginTop={'0'} height={'90vh'} width={'30vh'} bg={useColorModeValue('gray.200', 'gray.900')} >
+                        <Image
+                            border={['5px solid white', '5px solid white']}
+                            borderRadius="10"
+                            boxSize={['120px', '150px']}
+                            objectFit='cover'
+                            src={userData ? userData.imageUrl : ''}
+                            alt='User Profile'
+                            marginLeft={['0', '20px']}
+                            marginTop={['10px', '50px']}
+                            marginBottom={'10'}
+                        />
+                        <LinkItem name="About Me" icon={<Icon as={InfoOutlineIcon} />} onClick={() => handleLinkClick('aboutMe')} />
+                        <LinkItem name="My Trips" icon={<Icon as={StarIcon} />} onClick={() => handleLinkClick('myTrips')} />
+                        <LinkItem name="Countries" icon={<Icon as={Search2Icon} />} onClick={() => handleLinkClick('countries')} />
+                    </Card>
+                    <Card marginLeft={'10'} marginTop={'0'} height={'90vh'} width={'140vh'} bg={useColorModeValue('gray.200', 'gray.900')}>
+                        {selectedLink === 'aboutMe' && <AboutMe userData={userData} />}
+                        {selectedLink === 'myTrips' && <MyTrips trips={trips} />}
+                        {selectedLink === 'countries' && <CountriesComponent userData={userData} />}
+                    </Card>
+                </Box>
+            </Box>
+        </>
+    );
 }

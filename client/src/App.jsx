@@ -14,8 +14,8 @@ import CreateTrip from './pages/CreateTrip';
 import { PlayGround } from './pages/PlayGround';
 import MyTrip from './pages/MyTrip';
 import { ViewTrip } from './pages/ViewTrip';
-import AccountprofilePage from './pages/AccountProfilePage';
 import ChatPage from './pages/ChatPage';
+import Profile from './pages/Profile';
 
 
 const App = () => {
@@ -27,14 +27,15 @@ const App = () => {
           <Route path="/main" element={<MainPage/>}/>
           <Route path="/login" element={<SignInPage/>} />
           <Route path="/register" element={<Register/>} />
-          <Route path="/profile" element={<ProfilePage/>}/>
           <Route path="/editprofile" element={<EditProfile/>}/>
           <Route path="/createtrip" element={<CreateTrip/>}/>
           <Route path="/playground" element={<PlayGround/>}/>
           <Route path="/mytrips" element={<MyTrip/>}/>
           <Route path="/viewtrip/:tripId" element={<ViewTrip/>}/>
-          <Route path="/profile/:userId" element={<AccountprofilePage/>} />
           <Route path="/chat" element={<ChatPage/>}/>
+          <Route path="/profile" element={<Profile/>}/>
+          <Route path="/profilepage/:userId" element={<ProfilePage/>} />
+
 
 
 

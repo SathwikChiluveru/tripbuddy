@@ -52,12 +52,12 @@ export default function Navbar({ sessionId }) {
 
   return (
     
-      <Box bg={useColorModeValue('#0c6ff0', 'gray.900')} zIndex={'5'} px={4} top={'0'} position={'sticky'}>
+      <Box bg={useColorModeValue('gray.50', 'gray.900')} zIndex={'5'} px={4} top={'0'} position={'sticky'}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <Link to="/main">TRIPBUDDY</Link>
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={7}>
-              <Button bg={useColorModeValue('#0c6ff0', 'gray.900')} onClick={toggleColorMode}>
+              <Button bg={useColorModeValue('gray.50', 'gray.900')} onClick={toggleColorMode}>
                 {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
               </Button>
 

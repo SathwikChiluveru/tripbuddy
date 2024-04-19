@@ -1,12 +1,12 @@
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import worldMapData from '../assets/features.json';
-import { Box } from '@chakra-ui/react';
+import { Box, useColorModeValue } from '@chakra-ui/react';
 
 // const countriesVisited = ["Colombia", "Russia", "Malaysia", "Thailand", "Indonesia", "China"];
 
 export default function ProfileMap( {countriesVisited }) {
   return (
-    <Box w="90%" mx="auto" mt={4}>
+    <Box w="95%" mx="auto" mt={5} ml={5} bg={useColorModeValue('white', 'gray.900')}>
       <ComposableMap
         projection="geoEqualEarth"
         projectionConfig={{ scale: 150 }}

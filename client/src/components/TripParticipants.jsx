@@ -32,7 +32,7 @@ export const TripParticipants = ({ userId }) => {
   return (
     <Box mb={4}>
     {userData && (
-        <Link to={`/profile/${userData._id}`}>
+        <Link to={`/profilepage/${userData._id}`}>
         <Card _hover={{background: "gray.50", color: "gray.700"}} height={'20'} width={'100%'} direction={{ base: 'column', sm: 'row' }} overflow='hidden' variant='outline'>
             <Flex alignItems="center" justifyContent="space-between" marginLeft={2} width="100%">
                 <Flex alignItems="center">

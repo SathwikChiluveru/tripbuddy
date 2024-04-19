@@ -8,6 +8,7 @@ const connectDB = require('./config/db');
 const corsOptions = require('./config/corsOptions');
 const { Server } = require('socket.io');
 const { createServer } = require("http");
+const Message = require('./models/message.model')
 
 require('dotenv').config();
 
@@ -53,6 +54,7 @@ app.use('/api/user', require('./routes/user.route'));
 app.use('/api/trip', require('./routes/trip.route'));
 app.use('/api/auth', require('./routes/auth.route'));
 
+
 app.get('/', (req, res) => {
     res.send('Welcome');
 });
@@ -62,23 +64,33 @@ app.get('/healthcheck', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-    console.log('A user connected');
+    console.log(`User connected`);
+
+    const tripId = "66155e88fc38d20761a08975";
+
+    socket.join(tripId);
+    console.log(`User joined room ${tripId}`);
 
     // Handle socket disconnection
     socket.on('disconnect', () => {
         console.log('A user disconnected');
     });
 
-    // Join a room based on trip ID
-    socket.on('joinRoom', (tripId) => {
-        socket.join(tripId);
-        console.log(`User joined room ${tripId}`);
+    socket.on('chatMessage', async ({ tripId, sender, content }) => {
+        try {
+          const newMessage = new Message({ tripId, sender, content });
+          await newMessage.save();
+          io.to(tripId).emit('message', newMessage);
+          console.log(newMessage.content)
+        } catch (error) {
+          console.error(error);
+        }
     });
 
-    // Listen for chat messages
-    socket.on('chatMessage', ({ tripId, message }) => {
-        // Broadcast the message to all users in the room
-        io.to(tripId).emit('message', message);
-    });
+    // Join a room based on trip ID
+    // socket.on('joinRoom', (tripId) => {
+    //     socket.join(tripId);
+    //     console.log(`User joined room ${tripId}`);
+    // });
     
 });
