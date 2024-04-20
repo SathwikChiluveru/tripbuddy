@@ -1,8 +1,16 @@
+// message.model.js
+
 const mongoose = require('mongoose');
 
 const messageSchema = new mongoose.Schema({
-  tripId: { type: mongoose.Schema.Types.ObjectId, ref: 'Trip' },
-  sender: String,
+  chat: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Chat'
+  },
+  sender: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
   content: String,
   timestamp: { type: Date, default: Date.now }
 });

@@ -5,6 +5,7 @@ const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 const AWS = require('aws-sdk');
 const multer = require('multer');
+const Chat = require('../models/chat.model')
 
 
 const bucketName = process.env.AWS_BUCKET_NAME;
@@ -56,6 +57,15 @@ const createTrip = asyncHandler(async (req, res) => {
         },
       },
     });
+
+    // Create a chat room with the host
+    const chatRoom = new Chat({
+      chatName: savedTrip.title,
+      trip: savedTrip._id,
+      participants: [hostId],
+    });
+    await chatRoom.save();
+
     
     res.status(201).json(savedTrip);
   } catch (error) {
@@ -90,6 +100,24 @@ const joinTrip = asyncHandler(async (req, res) => {
       // Add the user to the tripMates array in the Trip Model
       trip.tripMates.push(userId); 
       await trip.save();
+
+      // Add user to the chat room associated with the trip
+      let chatRoom = await Chat.findOne({ trip: tripId });
+
+      if (!chatRoom) {
+        // If chat room doesn't exist, create a new one
+        chatRoom = new Chat({
+          chatName: trip.title, // Use trip title as chat name
+          trip: tripId,
+          participants: [userId],
+          messages: []
+        });
+      } else {
+        // If chat room exists, add user to participants
+        chatRoom.participants.push(userId);
+      }
+
+      await chatRoom.save();
 
       // Add trip ID and name to tripsJoined array in the User Model
       const user = await User.findById(userId);

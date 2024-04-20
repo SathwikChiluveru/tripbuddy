@@ -53,6 +53,8 @@ httpServer.listen(3000);
 app.use('/api/user', require('./routes/user.route'));
 app.use('/api/trip', require('./routes/trip.route'));
 app.use('/api/auth', require('./routes/auth.route'));
+app.use('/api/chat', require('./routes/chat.route'));
+
 
 
 app.get('/', (req, res) => {
