@@ -1,56 +1,66 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-import Cookies from 'js-cookie';
+import axios from 'axios'; // Import Axios
+import Cookies from 'js-cookie'
 
-const Chat = () => {
+const ChatComponent = () => {
+  const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [inputMessage, setInputMessage] = useState('');
-  const socket = io('localhost:3000');
-  const sessionId = Cookies.get('sessionId');
-
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
-    // Listen for incoming messages
-    socket.on('message', (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
+    const newSocket = io('http://localhost:3000');
+
+    newSocket.on('connect', () => {
+      console.log('Connected to Socket.IO server');
     });
-    
+
+    newSocket.on('newMessage', ({ sender, content }) => {
+      setMessages((prevMessages) => [...prevMessages, { sender, content }]);
+    });
+
+    setSocket(newSocket);
+
     return () => {
-      // Clean up when component unmounts
-      socket.disconnect();
+      newSocket.disconnect();
     };
   }, []);
 
-  const sendMessage = () => {
-    // Prepare the message data
-    const messageData = {
-      tripId: "66155e88fc38d20761a08975", // Hardcoded for now
-      sender: sessionId, // Hardcoded sender name for now
-      content: inputMessage.trim()
-    };
-  
-    // Emit the chatMessage event with the message data
-    socket.emit('chatMessage', messageData);
-  
-    // Clear the input field after sending the message
-    setInputMessage('');
+  const sendMessage = async () => {
+    try {
+      const sessionId = Cookies.get('sessionId'); 
+      const response = await axios.post(
+        `http://localhost:3000/api/chat/6622cd7324036e90a7e5af78/message`,
+        { sender: sessionId, content: inputValue }
+      );
+      socket.emit('sendMessage', { chatId: '6622cd7324036e90a7e5af78', sender: sessionId, content: inputValue });
+      console.log(response.data.message);
+      setInputValue('');
+    } catch (error) {
+      console.error('Error sending message:', error);
+      // Handle error
+    }
   };
 
   return (
     <div>
-      <div>
-        {messages.map((message, index) => (
-          <div key={index}>{message.content}</div>
+      <ul>
+        {messages.map((msg, index) => (
+          <li key={index}>
+            <strong>{msg.sender}:</strong> {msg.content}
+          </li>
         ))}
-      </div>
+      </ul>
       <input
         type="text"
-        value={inputMessage}
-        onChange={(e) => setInputMessage(e.target.value)}
+        placeholder="Type your message"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
       />
       <button onClick={sendMessage}>Send</button>
     </div>
   );
 };
 
-export default Chat;
+export default ChatComponent;

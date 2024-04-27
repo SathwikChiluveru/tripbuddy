@@ -32,6 +32,7 @@ const fetchUserChats = asyncHandler(async (req, res) => {
 const sendMessage = asyncHandler(async (req, res) => {
     const { chatId } = req.params;
     const { sender, content } = req.body;
+    const { io } = req.app.locals;
 
     // Retrieve chat details from the database
     const chat = await Chat.findById(chatId);
@@ -54,6 +55,9 @@ const sendMessage = asyncHandler(async (req, res) => {
 
     chat.messages.push(newMessage);
     await chat.save();
+
+    // Emit a Socket.IO event to notify connected clients about the new message
+    io.to(chatId).emit('newMessage', { chatId, sender, content });
 
     res.status(201).json({ message: 'Message sent successfully' });
 });

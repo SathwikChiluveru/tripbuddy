@@ -43,12 +43,10 @@ const io = new Server(httpServer, {
       origin: "http://localhost:5173"
     }
   });
-// For express servers, but we are using Socket IO
-// app.listen(PORT, () => {
-//     console.log(`Server is running on port ${PORT}.`);
-// });
 
-httpServer.listen(3000);
+httpServer.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`)
+});
 
 app.use('/api/user', require('./routes/user.route'));
 app.use('/api/trip', require('./routes/trip.route'));
@@ -65,34 +63,28 @@ app.get('/healthcheck', (req, res) => {
     res.send('Health check completed');
 });
 
+app.locals.io = io;
+
 io.on('connection', (socket) => {
-    console.log(`User connected`);
+  console.log('New client connected');
 
-    const tripId = "66155e88fc38d20761a08975";
+  // Handle joining a chat room
+  socket.on('joinRoom', (roomId) => {
+    socket.join(roomId);
+    console.log(`User ${socket.id} joined room ${roomId}`);
+  });
 
-    socket.join(tripId);
-    console.log(`User joined room ${tripId}`);
+  socket.on('disconnect', () => {
+      console.log('Client disconnected');
+  });
 
-    // Handle socket disconnection
-    socket.on('disconnect', () => {
-        console.log('A user disconnected');
-    });
+  socket.on('sendMessage', ({ roomId, content }) => {
+    io.to(roomId).emit('newMessage', { sender: socket.id, content });
+      console.log('Message sent')
+  });
 
-    socket.on('chatMessage', async ({ tripId, sender, content }) => {
-        try {
-          const newMessage = new Message({ tripId, sender, content });
-          await newMessage.save();
-          io.to(tripId).emit('message', newMessage);
-          console.log(newMessage.content)
-        } catch (error) {
-          console.error(error);
-        }
-    });
-
-    // Join a room based on trip ID
-    // socket.on('joinRoom', (tripId) => {
-    //     socket.join(tripId);
-    //     console.log(`User joined room ${tripId}`);
-    // });
-    
+  // Handle errors during connection
+  socket.on('error', (error) => {
+    console.error('Socket.IO connection error:', error);
+});
 });
