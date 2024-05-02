@@ -79,7 +79,8 @@ io.on('connection', (socket) => {
   });
 
   socket.on('sendMessage', ({ roomId, content }) => {
-    io.to(roomId).emit('newMessage', { sender: socket.id, content });
+    const timestamp = new Date().toISOString();
+    io.to(roomId).emit('newMessage', { sender: socket.id, content, timestamp });
       console.log('Message sent')
   });
 

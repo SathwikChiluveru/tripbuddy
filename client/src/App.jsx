@@ -14,7 +14,6 @@ import CreateTrip from './pages/CreateTrip';
 import { PlayGround } from './pages/PlayGround';
 import MyTrip from './pages/MyTrip';
 import { ViewTrip } from './pages/ViewTrip';
-import ChatPage from './pages/ChatPage';
 import Profile from './pages/Profile';
 
 
@@ -29,10 +28,9 @@ const App = () => {
           <Route path="/register" element={<Register/>} />
           <Route path="/editprofile" element={<EditProfile/>}/>
           <Route path="/createtrip" element={<CreateTrip/>}/>
-          <Route path="/playground" element={<PlayGround/>}/>
+          <Route path="/chat" element={<PlayGround/>}/>
           <Route path="/mytrips" element={<MyTrip/>}/>
           <Route path="/viewtrip/:tripId" element={<ViewTrip/>}/>
-          <Route path="/chat" element={<ChatPage/>}/>
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/profilepage/:userId" element={<ProfilePage/>} />
 

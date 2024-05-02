@@ -9,6 +9,7 @@ import Navbar from './../components/Navbar';
 import Cookies from 'js-cookie'
 import { useParams } from "react-router-dom";
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 
 export const ViewTrip = () => {
@@ -18,6 +19,7 @@ export const ViewTrip = () => {
     const { colorMode, toggleColorMode } = useColorMode()
     const { tripId } = useParams();
     console.log("View Page Trip ID", tripId)
+    const navigate = useNavigate();
 
     const [tripData, setTripData] = useState(null);
 
@@ -93,6 +95,10 @@ export const ViewTrip = () => {
         }
     };
 
+    const handleChats = () => {
+        navigate('/chat')
+    };
+
     const isUserParticipant = tripData.tripMates && tripData.tripMates.includes(sessionId);
 
     return (
@@ -141,7 +147,7 @@ export const ViewTrip = () => {
                 </CardBody>
                     <CardFooter mt={-5}>
                     {isUserParticipant && (
-                        <Button variant='solid' leftIcon={<ChatIcon />}  colorScheme='green' mr={2}>
+                        <Button variant='solid' leftIcon={<ChatIcon />}  colorScheme='green' mr={2} onClick={handleChats}>
                             Chat
                         </Button>
                     )}

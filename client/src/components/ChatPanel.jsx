@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { useState, useEffect, useRef } from 'react';
 import { Box, Flex, Text, Input, Button } from '@chakra-ui/react';
 import io from 'socket.io-client';
@@ -5,23 +7,48 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const ChatMessage = ({ message, isSent }) => {
+  const formattedTime = new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  const [senderName, setSenderName] = useState('');
+
+  useEffect(() => {
+    const fetchSenderName = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/user/getUserById/${message.sender}`);
+        setSenderName(response.data.username);
+      } catch (error) {
+        console.error('Error fetching sender name:', error);
+      }
+    };
+
+    fetchSenderName();
+  }, [message.sender]);
+
   return (
-    <Box
+    <>
+    <Box 
       bg={isSent ? 'blue.500' : 'purple.100'}
       color={isSent ? 'white' : 'black'}
       borderRadius="md"
       p="2"
-      maxW="70%"
+      maxW="100%"
       alignSelf={isSent ? 'flex-end' : 'flex-start'}
-      mb="2"
-    >
-      {message.content}
+      mb="1"
+      alignItems={isSent ? 'flex-end' : 'flex-start'}
+    > 
+      <Text>{message.content}</Text>
+      <Box marginTop="auto">
+        <Text fontSize="xs">{formattedTime}</Text>
+      </Box>
     </Box>
+    <Text fontSize="xs">{isSent ? '' : senderName}</Text>
+    </>
   );
 };
 
 const ChatPanel = ({ selectedChatId }) => {
   const [messages, setMessages] = useState([]);
+  const [title, setTitle] = useState();
   const sessionId = Cookies.get('sessionId');
   const [socket, setSocket] = useState(null);
   const [inputValue, setInputValue] = useState('');
@@ -67,6 +94,22 @@ const ChatPanel = ({ selectedChatId }) => {
     }
   }, [selectedChatId]);
 
+  useEffect(() => {
+    const fetchChatName = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/chat/${selectedChatId}/title`);
+        setTitle(response.data);
+        console.log(title)
+      } catch (error) {
+        console.error('Error fetching chat name:', error);
+      }
+    };
+
+    if (selectedChatId) {
+      fetchChatName();
+    }
+  }, [selectedChatId]);
+
   const handleSendMessage = async () => {
     if (messageInput.trim() !== '') {
       try {
@@ -90,13 +133,14 @@ const ChatPanel = ({ selectedChatId }) => {
 
   const [messageInput, setMessageInput] = useState('');
 
+
   return (
-    <Flex direction="column" h="97vh" mt="2" mr='2'>
-      {messages.length > 0 ? (
+    <Flex direction="column" h="97vh">
+      {/* {messages.length > 0 ? ( */}
         <>
-          <Box mb="5" bg={'grey'} width={'100%'}>
-            <Text fontSize="xl" fontWeight="bold">
-              Title:
+          <Box bg={'gray.100'} width={'100%'} height={'7%'} mb={'2'} display="flex" alignItems="center">
+            <Text fontSize="xl" fontWeight="bold" ml="5">
+              {title}
             </Text>
           </Box>
           <Box flex="1" mb="4" display="flex" flexDirection="column" style={{ overflowY: 'scroll', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
@@ -123,11 +167,11 @@ const ChatPanel = ({ selectedChatId }) => {
             </Button>
           </Flex>
         </>
-      ) : (
+      {/* ) : (
         <Box textAlign="center">
           <Text>No messages yet. Select a chat to start.</Text>
         </Box>
-      )}
+      )} */}
     </Flex>
   );
 };

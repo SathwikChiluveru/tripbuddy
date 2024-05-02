@@ -50,6 +50,10 @@ export default function Navbar({ sessionId }) {
 
   };
 
+  const handleChats = () => {
+    navigate('/chat')
+  };
+
   return (
     
       <Box bg={useColorModeValue('gray.50', 'gray.900')} zIndex={'5'} px={4} top={'0'} position={'sticky'}>
@@ -99,8 +103,7 @@ export default function Navbar({ sessionId }) {
                   </Center>
                   <br />
                   <MenuDivider />
-                  <MenuItem>My Trips</MenuItem>
-                  <MenuItem>Chat</MenuItem>
+                  <MenuItem onClick={handleChats}>My Chats</MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </MenuList>
               </Menu>

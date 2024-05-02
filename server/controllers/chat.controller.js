@@ -81,6 +81,26 @@ const getChatMessages = asyncHandler(async (req, res) => {
     }
 });
 
+const getChatTitle = asyncHandler(async (req, res) => {
+    const { chatId } = req.params;
+
+    try {
+        // Retrieve the chat by its ID
+        const chat = await Chat.findById(chatId);
+
+        if (!chat) {
+            return res.status(404).json({ message: 'Chat not found' });
+        }
+
+        // Return the messages of the chat
+        res.status(200).json(chat.chatName);
+    } catch (error) {
+        res.status(500).json("Error, not found");
+    }
+});
+
+
+
   
 
-module.exports = { createChat, fetchUserChats, sendMessage, getChatMessages };
+module.exports = { createChat, fetchUserChats, sendMessage, getChatMessages, getChatTitle };
