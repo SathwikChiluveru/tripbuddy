@@ -75,7 +75,7 @@ const getChatMessages = asyncHandler(async (req, res) => {
         }
 
         // Return the messages of the chat
-        res.status(200).json({ messages: chat.messages });
+        res.status(200).json({ tripId: chat.trip,  messages: chat.messages });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

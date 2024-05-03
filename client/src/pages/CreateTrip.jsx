@@ -161,6 +161,10 @@ export default function CreateTrip() {
         setTags((prevTags) => prevTags.filter((tag) => tag !== tagToRemove));
     };
 
+    const handleBack = () => {
+        navigate('/main');
+    };
+
     return (
         <Stack direction='column' m={'30px 50px'} minH={'75.8vh'}>
             <Stack direction='row' align={'center'}>
@@ -171,6 +175,8 @@ export default function CreateTrip() {
                     aria-label='Done'
                     fontSize='36px'
                     icon={<ChevronLeftIcon />}
+                    onClick={handleBack}
+
                 />
                 <Heading ml={'30px'}>Create Trip</Heading>
             </Stack>
@@ -184,7 +190,7 @@ export default function CreateTrip() {
 
                     <FormControl width={'100%'} justifyContent={'flex-start'} isRequired>
                         <FormLabel fontSize={'24px'}>Destination</FormLabel>
-                        <Input type='text' placeholder="Type a cool name..." mb={'20px'} value={formData.destination} onChange={(e) => {
+                        <Input type='text' placeholder="<City, Country> format....." mb={'20px'} value={formData.destination} onChange={(e) => {
                         const [city, country] = e.target.value.split(',').map(item => item.trim());
                         setFormData({ ...formData, city, country });
                         }} 

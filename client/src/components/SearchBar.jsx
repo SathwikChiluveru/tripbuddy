@@ -13,7 +13,7 @@ function SearchBar({ setSearchTerm }) {
   };
 
   return (
-    <Box maxWidth="400px" width='80%'>
+    <Box width='400px'>
       <InputGroup size='md'>
         <Input
           pr='4.5rem'

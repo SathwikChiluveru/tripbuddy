@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
-import { Box, Flex, Text, Grid } from '@chakra-ui/react';
+import { Box, Flex, Text, Grid, Button, HStack } from '@chakra-ui/react';
 import SearchBar from '../components/SearchBar';
 import Navbar from './../components/Navbar';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import TripComponent from './../components/TripComponent';
+import { AddIcon } from '@chakra-ui/icons';
+import { useNavigate } from 'react-router-dom'
 
 const MainPage = () => {
   const sessionId = Cookies.get('sessionId');
   const [allTrips, setAllTrips] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResult, setSearchResult] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTrips = async () => {
@@ -37,15 +40,22 @@ const MainPage = () => {
     setSearchTerm(value);
   };
 
+  const handleButton = () => {
+    navigate('/createTrip');
+};
+
   return (
     <>
       <Navbar sessionId={sessionId}/>
       <Box>
         <Flex justifyContent='center' flexDirection="column" paddingTop='10px' alignItems="center">
           <Text fontSize="4xl" fontWeight="bold" marginTop={'1%'} marginBottom={'1%'}>All Trips</Text>
+          <HStack>
           <SearchBar setSearchTerm={handleSearch} />
+          <Button rightIcon={<AddIcon/>} borderRadius="20" colorScheme='blue' variant='solid' onClick={handleButton}>Create Trip</Button>
+          </HStack>
         </Flex>
-        <Flex justifyContent='center' paddingTop='10px'>
+        <Flex justifyContent='center'>
           <Box>
               <Grid templateColumns="repeat(3, 1fr)" gap={8} mt={4}>
                 {searchResult.length > 0 ? (

@@ -20,6 +20,7 @@ export const ViewTrip = () => {
     const { tripId } = useParams();
     console.log("View Page Trip ID", tripId)
     const navigate = useNavigate();
+    const [showJoinButton, setShowJoinButton] = useState(true);
 
     const [tripData, setTripData] = useState(null);
 
@@ -136,25 +137,34 @@ export const ViewTrip = () => {
                     <StatGroup>
                         <Stat>
                             <StatLabel>Start Date</StatLabel>
-                            <StatNumber fontSize={'18'}>{formatDate(tripData.startDate)}</StatNumber>
+                            <StatNumber fontSize={'12'}>{formatDate(tripData.startDate)}</StatNumber>
                         </Stat>
                         <Stat>
                             <StatLabel>End Date</StatLabel>
-                            <StatNumber fontSize={'18'}>{formatDate(tripData.endDate)}</StatNumber>
+                            <StatNumber fontSize={'12'}>{formatDate(tripData.endDate)}</StatNumber>
                         </Stat>
                     </StatGroup>
                     </Box>
                 </CardBody>
-                    <CardFooter mt={-5}>
-                    {isUserParticipant && (
-                        <Button variant='solid' leftIcon={<ChatIcon />}  colorScheme='green' mr={2} onClick={handleChats}>
-                            Chat
+                <CardFooter mt={-10}>
+                    {isUserParticipant ? (
+                        <>
+                            <Button variant='solid' leftIcon={<ChatIcon />}  colorScheme='green' mr={2} onClick={handleChats}>
+                                Chat
+                            </Button>
+                            <Button variant='solid' colorScheme='red'>
+                                Leave Trip
+                            </Button>
+                        </>
+                    ) : showJoinButton && (
+                        <Button variant='solid' colorScheme='blue' onClick={() => {
+                            handleJoinTrip();
+                            setShowJoinButton(false);
+                        }} mr={2}>
+                            Join Trip
                         </Button>
                     )}
-                    <Button variant='solid' colorScheme='blue' onClick={handleJoinTrip}>
-                        Join Trip
-                    </Button>
-                    </CardFooter>
+                </CardFooter>
                 </Card>
             </Box>
             <Box marginBottom={'2%'}>
