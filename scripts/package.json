@@ -1,19 +1,14 @@
 {
   "name": "scripts",
   "version": "1.0.0",
-  "description": "",
-  "main": "createTrip.js",
+  "description": "Local demo seeding and isolated backend stress testing",
+  "main": "seed-demo.js",
   "scripts": {
-    "start": "node createTrip.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node seed-demo.js",
+    "stress": "node load-test.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "axios": "^1.6.8"
-  },
-  "devDependencies": {
-    "@faker-js/faker": "^8.4.1"
-  }
+  "dependencies": {}
 }

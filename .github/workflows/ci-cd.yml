@@ -1,40 +1,23 @@
-name: CI/CD
-
-on:
-  push:
-    branches:
-      - main
-
+name: Verify TripBuddy
+on: [push, pull_request]
 jobs:
-  docker:
+  verify:
     runs-on: ubuntu-latest
-
+    services:
+      mongo:
+        image: mongo:6
+        ports: ["27018:27017"]
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18.14.2'
-
-      - name: Go into server directory
-        run: cd server
-        
-
-      # - name: Install Dependencies
-      #   run: npm install
-
-      - name: Build Docker Image
-        run: docker compose up -d --build
-
-      - name: Run tests
-        run: |
-          # Add your test commands here
-          # For example:
-          echo "1"
-
-      - name: Tear down Docker Compose
-        run: docker-compose down
-
-
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            client/package-lock.json
+            server/package-lock.json
+      - run: npm ci --prefix server
+      - run: npm ci --prefix client
+      - run: npm test
+      - run: npm run lint
+      - run: npm run build

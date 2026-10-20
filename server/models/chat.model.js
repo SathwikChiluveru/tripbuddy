@@ -6,7 +6,9 @@ const chatSchema = new mongoose.Schema({
     chatName: { type: String, trim: true},
     trip: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Trip'
+      ref: 'Trip',
+      unique: true,
+      required: true
     },
     participants: [{
       type: mongoose.Schema.Types.ObjectId,

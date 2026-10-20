@@ -1,8 +1,5 @@
-# React + Vite
+﻿# TripBuddy frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React, Vite, local Manrope fonts, Lucide icons, and a small history router. The interface uses CSS and semantic forms; Chakra is no longer required. Socket.IO's client distribution is vendored in src/vendor with its MIT license.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Run npm run dev for hot reload, npm run build for assets, and npm run preview to inspect the build. API, uploads and sockets proxy to API_PROXY_TARGET (default http://127.0.0.1:3001). See the repository README for the complete setup, demo login and tests.

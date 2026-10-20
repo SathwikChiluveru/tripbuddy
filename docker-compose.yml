@@ -1,28 +1,43 @@
-version: '3'
-
 services:
-  backend:
-    build: 
-      context: ./server
-    container_name: tripbuddy-backend
-    ports:
-      - "3000:3000"
+  mongo:
+    image: mongo:6
+    volumes:
+      - mongo-data:/data/db
     healthcheck:
-      test: curl --fail http://localhost:3000/healthcheck || exit 1
-      interval: 1m30s
-      timeout: 30s
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  backend:
+    build: ./server
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    volumes:
+      - uploads:/app/uploads
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/healthcheck').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
       retries: 5
-      start_period: 30s
-    dns:
-      - 8.8.8.8
     environment:
-      NODE_ENV: production
-
+      NODE_ENV: development
+      HOST: 0.0.0.0
+      MONGO_URI: mongodb://mongo:27017/tripbuddy_dev
+      CLIENT_ORIGIN: http://localhost:5173
+      SESSION_SECRET: ${SESSION_SECRET:-local-compose-only-replace-before-hosting}
   frontend:
     build:
       context: ./client
-    container_name: tripbuddy-frontend
+      args:
+        VITE_GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID:-}
     ports:
-      - "5173:5173"
-    environment:
-      NODE_ENV: production
+      - "127.0.0.1:5173:5173"
+    depends_on:
+      backend:
+        condition: service_healthy
+volumes:
+  mongo-data:
+  uploads:

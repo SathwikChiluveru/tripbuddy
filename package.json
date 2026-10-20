@@ -1,0 +1,16 @@
+{
+  "name": "tripbuddy",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node scripts/dev.js --preview",
+    "dev": "node scripts/dev.js",
+    "seed": "node scripts/seed-demo.js",
+    "test": "node --test server/tests/integration.test.js",
+    "stress": "node scripts/load-test.js",
+    "build": "npm --prefix client run build",
+    "lint": "npm --prefix client run lint",
+    "test:ui": "node tests/ui-smoke.cjs"
+  },
+  "engines": { "node": ">=20" }
+}

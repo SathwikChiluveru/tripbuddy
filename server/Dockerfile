@@ -1,14 +1,7 @@
-## Node Runtime version
-FROM node:18.14.2
-
-##Set the working directory to /app
+FROM node:22-alpine
 WORKDIR /app
-
-##COPY 
+COPY package*.json ./
+RUN npm ci --omit=dev
 COPY . .
-
-RUN npm install
-
 EXPOSE 3000
-
-CMD [ "npm", "start" ]
+CMD ["node", "index.js"]

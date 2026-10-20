@@ -1,0 +1,399 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-19T13:51:48.948Z",
+  "title": "Design System: TripBuddy",
+  "extensions": {
+    "colorMeta": {
+      "forest-ink": {
+        "role": "primary",
+        "displayName": "forest ink",
+        "canonical": "#203c32",
+        "tonalRamp": [
+          "oklch(15% 0.0388 169.02)",
+          "oklch(27% 0.0388 169.02)",
+          "oklch(39% 0.0388 169.02)",
+          "oklch(51% 0.0388 169.02)",
+          "oklch(63% 0.0388 169.02)",
+          "oklch(75% 0.0388 169.02)",
+          "oklch(87% 0.0388 169.02)",
+          "oklch(95% 0.0388 169.02)"
+        ]
+      },
+      "forest-action": {
+        "role": "primary",
+        "displayName": "forest action",
+        "canonical": "#254d3d",
+        "tonalRamp": [
+          "oklch(15% 0.0535 165.60)",
+          "oklch(27% 0.0535 165.60)",
+          "oklch(39% 0.0535 165.60)",
+          "oklch(51% 0.0535 165.60)",
+          "oklch(63% 0.0535 165.60)",
+          "oklch(75% 0.0535 165.60)",
+          "oklch(87% 0.0535 165.60)",
+          "oklch(95% 0.0535 165.60)"
+        ]
+      },
+      "forest-hover": {
+        "role": "primary",
+        "displayName": "forest hover",
+        "canonical": "#173b2c",
+        "tonalRamp": [
+          "oklch(15% 0.0500 163.84)",
+          "oklch(27% 0.0500 163.84)",
+          "oklch(39% 0.0500 163.84)",
+          "oklch(51% 0.0500 163.84)",
+          "oklch(63% 0.0500 163.84)",
+          "oklch(75% 0.0500 163.84)",
+          "oklch(87% 0.0500 163.84)",
+          "oklch(95% 0.0500 163.84)"
+        ]
+      },
+      "cream": {
+        "role": "neutral",
+        "displayName": "cream",
+        "canonical": "#f7f5ef",
+        "tonalRamp": [
+          "oklch(15% 0.0082 91.48)",
+          "oklch(27% 0.0082 91.48)",
+          "oklch(39% 0.0082 91.48)",
+          "oklch(51% 0.0082 91.48)",
+          "oklch(63% 0.0082 91.48)",
+          "oklch(75% 0.0082 91.48)",
+          "oklch(87% 0.0082 91.48)",
+          "oklch(95% 0.0082 91.48)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "white",
+        "canonical": "#fff",
+        "tonalRamp": [
+          "oklch(15% 0.0000 89.88)",
+          "oklch(27% 0.0000 89.88)",
+          "oklch(39% 0.0000 89.88)",
+          "oklch(51% 0.0000 89.88)",
+          "oklch(63% 0.0000 89.88)",
+          "oklch(75% 0.0000 89.88)",
+          "oklch(87% 0.0000 89.88)",
+          "oklch(95% 0.0000 89.88)"
+        ]
+      },
+      "muted-text": {
+        "role": "neutral",
+        "displayName": "muted text",
+        "canonical": "#606c5e",
+        "tonalRamp": [
+          "oklch(15% 0.0261 141.17)",
+          "oklch(27% 0.0261 141.17)",
+          "oklch(39% 0.0261 141.17)",
+          "oklch(51% 0.0261 141.17)",
+          "oklch(63% 0.0261 141.17)",
+          "oklch(75% 0.0261 141.17)",
+          "oklch(87% 0.0261 141.17)",
+          "oklch(95% 0.0261 141.17)"
+        ]
+      },
+      "sage-emphasis": {
+        "role": "neutral",
+        "displayName": "sage emphasis",
+        "canonical": "#758260",
+        "tonalRamp": [
+          "oklch(15% 0.0521 124.97)",
+          "oklch(27% 0.0521 124.97)",
+          "oklch(39% 0.0521 124.97)",
+          "oklch(51% 0.0521 124.97)",
+          "oklch(63% 0.0521 124.97)",
+          "oklch(75% 0.0521 124.97)",
+          "oklch(87% 0.0521 124.97)",
+          "oklch(95% 0.0521 124.97)"
+        ]
+      },
+      "sage-band": {
+        "role": "neutral",
+        "displayName": "sage band",
+        "canonical": "#e9ecdf",
+        "tonalRamp": [
+          "oklch(15% 0.0176 117.30)",
+          "oklch(27% 0.0176 117.30)",
+          "oklch(39% 0.0176 117.30)",
+          "oklch(51% 0.0176 117.30)",
+          "oklch(63% 0.0176 117.30)",
+          "oklch(75% 0.0176 117.30)",
+          "oklch(87% 0.0176 117.30)",
+          "oklch(95% 0.0176 117.30)"
+        ]
+      },
+      "sage-panel": {
+        "role": "neutral",
+        "displayName": "sage panel",
+        "canonical": "#eef0e6",
+        "tonalRamp": [
+          "oklch(15% 0.0134 115.84)",
+          "oklch(27% 0.0134 115.84)",
+          "oklch(39% 0.0134 115.84)",
+          "oklch(51% 0.0134 115.84)",
+          "oklch(63% 0.0134 115.84)",
+          "oklch(75% 0.0134 115.84)",
+          "oklch(87% 0.0134 115.84)",
+          "oklch(95% 0.0134 115.84)"
+        ]
+      },
+      "divider": {
+        "role": "neutral",
+        "displayName": "divider",
+        "canonical": "#dce0d4",
+        "tonalRamp": [
+          "oklch(15% 0.0167 121.79)",
+          "oklch(27% 0.0167 121.79)",
+          "oklch(39% 0.0167 121.79)",
+          "oklch(51% 0.0167 121.79)",
+          "oklch(63% 0.0167 121.79)",
+          "oklch(75% 0.0167 121.79)",
+          "oklch(87% 0.0167 121.79)",
+          "oklch(95% 0.0167 121.79)"
+        ]
+      },
+      "field-border": {
+        "role": "neutral",
+        "displayName": "field border",
+        "canonical": "#cdd5c6",
+        "tonalRamp": [
+          "oklch(15% 0.0221 130.04)",
+          "oklch(27% 0.0221 130.04)",
+          "oklch(39% 0.0221 130.04)",
+          "oklch(51% 0.0221 130.04)",
+          "oklch(63% 0.0221 130.04)",
+          "oklch(75% 0.0221 130.04)",
+          "oklch(87% 0.0221 130.04)",
+          "oklch(95% 0.0221 130.04)"
+        ]
+      },
+      "secondary-border": {
+        "role": "neutral",
+        "displayName": "secondary border",
+        "canonical": "#c7cebd",
+        "tonalRamp": [
+          "oklch(15% 0.0244 125.25)",
+          "oklch(27% 0.0244 125.25)",
+          "oklch(39% 0.0244 125.25)",
+          "oklch(51% 0.0244 125.25)",
+          "oklch(63% 0.0244 125.25)",
+          "oklch(75% 0.0244 125.25)",
+          "oklch(87% 0.0244 125.25)",
+          "oklch(95% 0.0244 125.25)"
+        ]
+      },
+      "focus-copper": {
+        "role": "neutral",
+        "displayName": "focus copper",
+        "canonical": "#ba713e",
+        "tonalRamp": [
+          "oklch(15% 0.1137 53.83)",
+          "oklch(27% 0.1137 53.83)",
+          "oklch(39% 0.1137 53.83)",
+          "oklch(51% 0.1137 53.83)",
+          "oklch(63% 0.1137 53.83)",
+          "oklch(75% 0.1137 53.83)",
+          "oklch(87% 0.1137 53.83)",
+          "oklch(95% 0.1137 53.83)"
+        ]
+      },
+      "error-ink": {
+        "role": "neutral",
+        "displayName": "error ink",
+        "canonical": "#8b3829",
+        "tonalRamp": [
+          "oklch(15% 0.1168 32.18)",
+          "oklch(27% 0.1168 32.18)",
+          "oklch(39% 0.1168 32.18)",
+          "oklch(51% 0.1168 32.18)",
+          "oklch(63% 0.1168 32.18)",
+          "oklch(75% 0.1168 32.18)",
+          "oklch(87% 0.1168 32.18)",
+          "oklch(95% 0.1168 32.18)"
+        ]
+      },
+      "error-surface": {
+        "role": "neutral",
+        "displayName": "error surface",
+        "canonical": "#f8e8de",
+        "tonalRamp": [
+          "oklch(15% 0.0221 54.33)",
+          "oklch(27% 0.0221 54.33)",
+          "oklch(39% 0.0221 54.33)",
+          "oklch(51% 0.0221 54.33)",
+          "oklch(63% 0.0221 54.33)",
+          "oklch(75% 0.0221 54.33)",
+          "oklch(87% 0.0221 54.33)",
+          "oklch(95% 0.0221 54.33)"
+        ]
+      },
+      "filter-selected": {
+        "role": "neutral",
+        "displayName": "filter selected",
+        "canonical": "#2c503f",
+        "tonalRamp": [
+          "oklch(15% 0.0511 162.41)",
+          "oklch(27% 0.0511 162.41)",
+          "oklch(39% 0.0511 162.41)",
+          "oklch(51% 0.0511 162.41)",
+          "oklch(63% 0.0511 162.41)",
+          "oklch(75% 0.0511 162.41)",
+          "oklch(87% 0.0511 162.41)",
+          "oklch(95% 0.0511 162.41)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Landing hero invitation."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Trip card titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Trip descriptions."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Persistent form labels."
+      }
+    },
+    "shadows": [
+      {
+        "name": "hero-search",
+        "value": "0 8px 20px #28443108",
+        "purpose": "Subtle hero search separation."
+      },
+      {
+        "name": "hero-note",
+        "value": "0 9px 26px #213d3212",
+        "purpose": "Lift the rotated hero note."
+      },
+      {
+        "name": "button-hover",
+        "value": "0 5px 15px #243d3214",
+        "purpose": "Action hover feedback."
+      },
+      {
+        "name": "mobile-menu",
+        "value": "0 15px 20px #203c320a",
+        "purpose": "Separate expanded navigation."
+      }
+    ],
+    "motion": [
+      {
+        "name": "photo-hover",
+        "value": "transform .6s cubic-bezier(.16,1,.3,1)",
+        "purpose": "Image zoom to 1.04; reduced motion disables transitions."
+      },
+      {
+        "name": "button",
+        "value": "background .2s,box-shadow .2s",
+        "purpose": "Action feedback."
+      },
+      {
+        "name": "spinner",
+        "value": "spin .8s linear infinite",
+        "purpose": "Loading indicator; reduced motion disables animation."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact-desktop",
+        "value": "1000px"
+      },
+      {
+        "name": "mobile",
+        "value": "760px"
+      },
+      {
+        "name": "small-mobile",
+        "value": "430px"
+      },
+      {
+        "name": "hero-reveal-min",
+        "value": "900px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary Button from the implemented TripBuddy interface.",
+      "html": "<button class=\"ds-primary\">Join the adventure</button>",
+      "css": ".ds-primary{font:650 .78rem Manrope,sans-serif;background:#254d3d;color:#fff;border:1px solid #254d3d;border-radius:4px;padding:15px 23px;cursor:pointer;transition:background .2s,box-shadow .2s}.ds-primary:hover{background:#173b2c;box-shadow:0 5px 15px #243d3214}.ds-primary:focus-visible{outline:3px solid #ba713e;outline-offset:4px}.ds-primary:disabled{opacity:.55;cursor:not-allowed}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Secondary Button from the implemented TripBuddy interface.",
+      "html": "<button class=\"ds-secondary\">Edit trip</button>",
+      "css": ".ds-secondary{font:650 .78rem Manrope,sans-serif;background:transparent;color:#294b39;border:1px solid #c7cebd;border-radius:4px;padding:15px 23px;cursor:pointer;transition:background .2s}.ds-secondary:hover{background:#e8ecdf}.ds-secondary:focus-visible{outline:3px solid #ba713e;outline-offset:4px}"
+    },
+    {
+      "name": "Labeled Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Labeled Field from the implemented TripBuddy interface.",
+      "html": "<label class=\"ds-field\">Country<input placeholder=\"Where are you going?\"></label>",
+      "css": ".ds-field{display:flex;flex-direction:column;gap:9px;font:650 .75rem Manrope,sans-serif;color:#203c32}.ds-field input{font:400 .83rem Manrope,sans-serif;background:#fff;color:#264333;border:1px solid #cdd5c6;border-radius:4px;padding:13px 14px}.ds-field input:focus-visible{outline:3px solid #ba713e;outline-offset:4px}"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "filter",
+      "description": "Filter Chip from the implemented TripBuddy interface.",
+      "html": "<button class=\"ds-filter\">Nature</button><button class=\"ds-filter ds-selected\" aria-pressed=\"true\">Adventure</button>",
+      "css": ".ds-filter{font:.72rem Manrope,sans-serif;background:none;border:1px solid #ccd4c2;color:#59674f;border-radius:30px;padding:9px 17px;cursor:pointer}.ds-filter.ds-selected{background:#2c503f;border-color:#2c503f;color:#fff}.ds-filter:focus-visible{outline:3px solid #ba713e;outline-offset:4px}"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Navigation from the implemented TripBuddy interface.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#explore\" class=\"ds-active\" aria-current=\"page\">Explore trips</a><a href=\"#create\">Plan a trip</a></nav>",
+      "css": ".ds-nav{display:flex;gap:29px;font:650 .83rem Manrope,sans-serif;background:#f7f5ef;color:#203c32}.ds-nav a{padding:10px 0;color:inherit;text-decoration:none}.ds-nav .ds-active{color:#a55935;text-decoration:underline;text-underline-offset:8px}.ds-nav a:focus-visible{outline:3px solid #ba713e;outline-offset:4px}"
+    },
+    {
+      "name": "Trip Card",
+      "kind": "card",
+      "refersTo": "trip-card",
+      "description": "Trip Card from the implemented TripBuddy interface.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-photo\"><span>Demo itinerary</span></div><div class=\"ds-meta\">Chur, Switzerland &nbsp; 4 spots left</div><h3>Take the scenic route</h3><p>Dec 13, 2026 to Dec 20, 2026</p></article>",
+      "css": ".ds-card{font-family:Manrope,sans-serif;color:#203c32;max-width:360px}.ds-photo{position:relative;aspect-ratio:1.32;border-radius:5px;background:#e9ecdf;overflow:hidden}.ds-photo span{position:absolute;left:15px;top:15px;padding:7px 11px;background:#faf9f1ed;border-radius:3px;font-size:.65rem;font-weight:650}.ds-meta{font-size:.66rem;color:#65715d;margin:18px 0 9px}.ds-card h3{font:400 1.45rem Georgia,serif;letter-spacing:-.025em;margin:0}.ds-card p{font-size:.67rem;color:#606c5e;margin-top:14px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "A warm travel journal",
+    "overview": "Cream paper, forest ink, editorial serif headings and destination photography establish the implemented direction delegated by the user. Local Manrope gives navigation, forms and metadata a practical voice. This document records the current implementation in `client/src/style.css` and `client/src/App.jsx`, checked against `.local/ui/desktop.png` and `.local/ui/mobile.png`; it does not introduce a new visual identity.\n\nThe landing page works in Persuade mode: generous space, a large invitation, destination search and a photographic introduction. Discovery, trip details, editing, profiles and chat work in Operate mode: clear controls, visible state, compact metadata and task-oriented layouts. Keep the shared palette and typography while respecting that difference in density.",
+    "keyCharacteristics": [
+      "Warm cream and forest green, with restrained sage and copper accents.",
+      "Serif editorial hierarchy paired with local Manrope controls.",
+      "Destination photographs and open, unboxed trip cards.",
+      "Responsive forms and explicit loading, empty, error and demo states."
+    ],
+    "rules": [],
+    "dos": [
+      "Do keep the cream canvas, forest hierarchy and serif/Manrope pairing.",
+      "Do preserve visible labels, focus states, responsive stacking and clear asynchronous feedback.",
+      "Do identify demonstration itineraries wherever they appear."
+    ],
+    "donts": [
+      "Don't enclose every trip in a raised white card.",
+      "Don't repeat the hero curve or rotated note on ordinary application controls.",
+      "Don't trade operational clarity for landing-page decoration.\r"
+    ]
+  }
+}

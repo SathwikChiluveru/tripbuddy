@@ -1,91 +1,48 @@
-// Import statements
-const express = require('express');
-const multer  = require('multer');
-const session = require('express-session');
-const cors = require('cors');
-const path = require('path');
-const connectDB = require('./config/db');
-const corsOptions = require('./config/corsOptions');
-const { Server } = require('socket.io');
-const { createServer } = require("http");
-const Message = require('./models/message.model')
-
 require('dotenv').config();
-
-const app = express(); 
-
-app.use(express.json());
-
-connectDB();
-
-app.use(
-    session({
-      secret: 'secret',
-      resave: true,
-      saveUninitialized: true,
-      cookie: { secure: false },
-    })
-);
-
-app.use(cors({
-    origin: 'http://localhost:5173'
-}));
-
-
-const PORT = process.env.PORT || 3000;
-
-// Create an HTTP server instance
-const httpServer = createServer(app);
-
-// Pass the server instance to the Socket.IO constructor
-const io = new Server(httpServer, {
-    cors: {
-      origin: "http://localhost:5173"
-    }
+const mongoose = require('mongoose');
+const {
+  createApp
+} = require('./app');
+async function start() {
+  await mongoose.connect(process.env.MONGO_URI || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27018/tripbuddy_dev', {
+    serverSelectionTimeoutMS: 5000
   });
-
-httpServer.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`)
-});
-
-app.use('/api/user', require('./routes/user.route'));
-app.use('/api/trip', require('./routes/trip.route'));
-app.use('/api/auth', require('./routes/auth.route'));
-app.use('/api/chat', require('./routes/chat.route'));
-
-
-
-app.get('/', (req, res) => {
-    res.send('Welcome');
-});
-
-app.get('/healthcheck', (req, res) => {
-    res.send('Health check completed');
-});
-
-app.locals.io = io;
-
-io.on('connection', (socket) => {
-  console.log('New client connected');
-
-  // Handle joining a chat room
-  socket.on('joinRoom', (roomId) => {
-    socket.join(roomId);
-    console.log(`User ${socket.id} joined room ${roomId}`);
+  mongoose.set('bufferCommands', false);
+  await Promise.all([require('./models/user.model').init(), require('./models/trip.model').init(), require('./models/chat.model').init()]);
+  await mongoose.connection.collection('sessions').createIndex({
+    expires: 1
+  }, {
+    expireAfterSeconds: 0
   });
-
-  socket.on('disconnect', () => {
-      console.log('Client disconnected');
+  const server = createApp();
+  await new Promise((resolve, reject) => {
+    server.httpServer.once('error', reject);
+    server.httpServer.listen(Number(process.env.PORT) || 3000, process.env.HOST || '127.0.0.1', resolve);
   });
-
-  socket.on('sendMessage', ({ roomId, content }) => {
-    const timestamp = new Date().toISOString();
-    io.to(roomId).emit('newMessage', { sender: socket.id, content, timestamp });
-      console.log('Message sent')
-  });
-
-  // Handle errors during connection
-  socket.on('error', (error) => {
-    console.error('Socket.IO connection error:', error);
+  console.log(`TripBuddy API listening on ${process.env.HOST || '127.0.0.1'}:${server.httpServer.address().port}`);
+  let closing = false;
+  const shutdown = async () => {
+    if (closing) return;
+    closing = true;
+    const timeout = setTimeout(() => process.exit(1), 10000);
+    timeout.unref();
+    await new Promise(resolve => server.io.close(resolve));
+    await mongoose.disconnect();
+    clearTimeout(timeout);
+  };
+  process.once('SIGTERM', shutdown);
+  process.once('SIGINT', shutdown);
+  return {
+    ...server,
+    shutdown
+  };
+}
+if (require.main === module) start().catch(async error => {
+  console.error(`Server startup failed: ${error.message}`);
+  await mongoose.disconnect();
+  process.exitCode = 1;
 });
-});
+module.exports = {
+  start,
+  createApp
+};
